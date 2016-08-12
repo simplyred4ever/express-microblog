@@ -1,5 +1,7 @@
 重写nodejs开发指南－微博系统 express.js mongodb。
+
 model层开始使用es6代码风格：
+
 var mongodb = require('./db');
 var co = require("co");
 var util = require('util');

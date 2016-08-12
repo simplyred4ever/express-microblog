@@ -1,0 +1,61 @@
+<!DOCTYPE html> 
+<html> 
+  <head> 
+    <title><%= title %> - Microblog</title> 
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/stylesheets/bootstrap.css" /> 
+    <link rel="stylesheet" href="/stylesheets/bootstrap-theme.css"> 
+	<!--[if lt IE 9]>
+      <script src="/javascripts/html5shiv.min.js"></script>
+      <script src="/javascripts/respond.min.js"></script>
+    <![endif]-->
+  </head> 
+  <body> 
+   
+	<div class="navbar navbar-default navbar-fixed-top navbar-inverse"> 
+		<div class="container-fluid"> 
+			<div class="navbar-header"> 
+				<a class="navbar-brand" href="/">Microblog</a> 
+			</div> 
+			<div class="collapse navbar-collapse"> 
+				<ul class="nav navbar-nav"> 
+				<li class="active"><a href="/">首页</a></li> 
+				<% if (!user) { %> 
+				<li><a href="/login">登入</a></li> 
+				<li><a href="/reg">注册</a></li> 
+				<% } else { %> 
+				<li><a href="/logout">登出</a></li> 
+				<li><a href="/u/<%= user.name %>">当前用户：<%= user.name %></a></li> 
+				<% } %> 
+				</ul> 
+			</div> 
+		</div> 
+	</div> 
+	<div id="container" class="container" style="padding:60px;"> 
+		<% if (success) { %> 
+		<div class="alert alert-success"> 
+			<%= success %> 
+		</div> 
+		<% } %> 
+		<% if (error) { %> 
+		<div class="alert alert-error"> 
+			<%= error %> 
+		</div> 
+		<% } %> 
+	  <%- body %>
+ 
+	  <hr /> 
+	  <footer> 
+		<p>
+			<a href="https://github.com/BYVoid/microblog" target="_blank">express2.x</a> 2013
+			<a href="https://github.com/owenXin/microblogByOwen" target="_blank">express3.x</a> 2015
+			<a href="https://github.com/yuanzm/microblog" target="_blank">express4.x</a> 2016
+		</p> 
+	  </footer> 
+	</div> 
+	<script src="/javascripts/jquery.js"></script> 
+	<script src="/javascripts/bootstrap.js"></script> 
+  </body> 
+</html> 

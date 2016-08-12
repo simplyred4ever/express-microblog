@@ -1,0 +1,11 @@
+<form method="post" action="/post" class="well well-lg" style="text-align:center;">
+	<div class="col-lg-10" style="margin:-16px">
+		<div class="input-group">
+		  <input type="text" class="form-control" name="post">
+		  <span class="input-group-btn">
+			<button class="btn btn-default" type="submit">发言</button>
+		  </span>
+		</div><!-- /input-group -->
+	</div><!-- /.col-lg-10 -->
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>"/>
+</form>

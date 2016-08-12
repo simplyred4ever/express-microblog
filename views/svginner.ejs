@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html> 
+  <head>
+
+
+    <script src="javascripts/svg.js"></script>
+    
+    
+  </head>
+  
+  <body>
+  	//默认情况下,在ie中使用flash进行svg渲染,其他支持svg的浏览器,比如firefox,则使用原生的svg支持渲染
+	//如果想强制在支持svg的浏览器中使用基flash渲染机制,有两种方式:
+	//1.需要在连接下后加?svg.render.forceflash=true,比如:test.html?svg.render.forceflash=true
+	//2.在head标签添加如下meta信息:meta name="svg.render.forceflash" content="true"
+
+	//注意:svg.js的路径,配置不正确可能无法加载对应的svg.swf
+
+	<hr/>
+	1.嵌入式svg
+		<button id="b1">操作嵌入式的svg</button>
+	<script type="text/javascript">
+		window.onsvgload = function(){
+			document.getElementById('b1').onclick = function(){
+				var g = document.getElementById('myGroup');
+				if(g.style.fill == 'yellow'){
+					g.style.fill = 'blue';
+				} else {
+					g.style.fill = 'yellow';
+				}
+			};
+			document.getElementById('myCircle').addEventListener('click',function(){
+				var g = document.getElementById('myGroup');
+				if(g.style.fill == 'red'){
+					g.style.fill = 'green';
+				} else {
+					g.style.fill = 'red';
+				}
+			},false);
+
+		}
+	
+	</script>
+
+	<script type="image/svg+xml">
+        <svg width="200" height="200"
+             style="background-color: #D2B48C; display: block; margin-bottom: 5px;"
+             id="embeddedSVG">
+          <g id="myGroup" 
+             fill="blue" 
+             style="font-size: 18px; text-anchor: middle; font-family: serif;">
+            <circle id="myCircle"
+                    cx="100" cy="75" r="50"
+                    stroke="firebrick"
+                    stroke-width="3"  />
+            <text x="100" y="155">Hello World</text>
+            <text x="100" y="175">From Embedded SVG!</text>
+          </g>
+        </svg>
+      </script>
+
+
+
+  </body>
+</html>

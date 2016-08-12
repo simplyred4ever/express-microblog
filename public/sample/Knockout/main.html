@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+    <title>knockout学习系列</title>
+    <script src="../../javascripts/knockout-3.4.0.js"></script>
+	<script>
+		window.onload=function(){
+			var myViewModel ={
+				myValue: ko.observable("Halower")
+			}
+			ko.applyBindings(myViewModel);
+		}
+	</script>
+</head>
+<body>
+<h2>欢迎学习Knockout课程</h2>
+    输入值：<input type="text" id="txtValue" data-bind="value: myValue" /><br/>
+    响应文本：<span id="spnValue" data-bind="text: myValue"></span>
+</body>
+</html>

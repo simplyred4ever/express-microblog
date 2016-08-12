@@ -1,15 +1,16 @@
 var mongodb = require('./db');
 var co = require("co");
+var settings = require('../settings');
 
 class User {
 	constructor(user) {
 		this.name = user.name;
 		this.password = user.password;
 	}
-	
+
 	static get(username, callback) {
-		co(function* () {		
-			var db = yield mongodb.connect('mongodb://localhost/microblog');
+		co(function* () {
+			var db = yield mongodb.connect(settings.URL);
 			var collection = yield db.collection('users');
 			var doc = yield collection.findOne({
 				name : username
@@ -32,8 +33,8 @@ class User {
 			name : this.name,
 			password : this.password,
 		};
-		co(function* () {		
-			var db = yield mongodb.connect('mongodb://localhost/microblog');
+		co(function* () {
+			var db = yield mongodb.connect(settings.URL);
 			var collection = yield db.collection('users');
 			collection.ensureIndex('name', {
 				unique : true

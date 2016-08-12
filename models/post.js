@@ -1,6 +1,7 @@
 var mongodb = require('./db');
 var co = require("co");
 var util = require('util');
+var settings = require('../settings');
 
 class Post {
 	constructor(username, post, time) {
@@ -12,10 +13,10 @@ class Post {
 			this.time = new Date();
 		}
 	};
-	
+
 	static get (username, callback) {
-		co(function* () {		
-			var db = yield mongodb.connect('mongodb://localhost/microblog');
+		co(function* () {
+			var db = yield mongodb.connect(settings.URL);
 			var collection = yield db.collection('posts');
 			var query = {};
 			if (username) {
@@ -39,16 +40,16 @@ class Post {
 			callback(JSON.stringify(e), null);
 		});
 	}
-	
+
 	save (callback) {
 		var post = {
 			user : this.user,
 			post : this.post,
 			time : this.time,
 		};
-		
-		co(function* () {		
-			var db = yield mongodb.connect('mongodb://localhost/microblog');
+
+		co(function* () {
+			var db = yield mongodb.connect(settings.URL);
 			var collection = yield db.collection('posts');
 			collection.ensureIndex('user');
 			yield collection.insert(post, {

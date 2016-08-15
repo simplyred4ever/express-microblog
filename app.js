@@ -52,7 +52,7 @@ app.use(session({
     resave: false, //添加这行
     saveUninitialized: true, //添加这行
     secret: settings.COOKIE_SECRET,
-    key: settings.db, //cookie name
+    key: settings.DB, //cookie name
     cookie: {
         maxAge: 1000 * 60 * 60 * 24 * 30
     }, //30 days
@@ -91,10 +91,6 @@ app.use(errorHandler({
     dumpExceptions: true,
     showStack: true
 }));
-
-var users = {};
-var usernames = {};
-
 io.on('connection', function(socket) {
     console.log("Connection " + socket.id + " accepted.");
     socket.on('disconnect', function() {

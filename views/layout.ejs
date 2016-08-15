@@ -23,10 +23,10 @@
 				<ul class="nav navbar-nav">
 				<li class="active"><a href="/">首页</a></li>
 				<% if (!user) { %>
-				<li><a href="/login">登入</a></li>
+				<li><a href="/login">登录</a></li>
 				<li><a href="/reg">注册</a></li>
 				<% } else { %>
-				<li><a href="/logout" onclick="disconnect();">登出</a></li>
+				<li><a href="/logout" onclick="disconnect();">退出</a></li>
 				<li><a href="/u/<%= user.name %>">当前用户：<%= user.name %></a></li>
 				<% } %>
 				</ul>
@@ -67,7 +67,8 @@ var firstConnect = true;
 
 function connect() {
   if (firstConnect) {
-    socket = io.connect(null);
+    io.set('transports', ['websocket','flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']);
+    socket = io.connect(window.location.protocol + '//' + window.location.host);
     socket.on('message', function (data) {
         message(data);
     });

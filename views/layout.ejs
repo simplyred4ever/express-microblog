@@ -49,7 +49,7 @@
 	  <hr />
 	  <footer>
 		<p>
-			<a href="https://github.com/simplyred4ever/express-microblog" target="_blank">express4.x</a> 2016
+			<a href="https://github.com/simplyred4ever/express-microblog" target="_blank">express-microblog</a> 2016
 		</p>
 	  </footer>
 	</div>
@@ -67,8 +67,8 @@ var firstConnect = true;
 
 function connect() {
   if (firstConnect) {
-    io.set('transports', ['websocket','flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']);
-    socket = io.connect(window.location.protocol + '//' + window.location.host);
+    //io.set('transports', ['websocket','flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']);
+    socket = io.connect(window.location.protocol + '//' + window.location.host);//null
     socket.on('message', function (data) {
         message(data);
     });

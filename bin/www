@@ -1,6 +1,6 @@
 var debug = require('debug')('microblog');
 var app = require('../app');
 
-var server = app.listen(app.get('port'), function() {
-  debug('Express server listening on port ' + server.address().port);
+app.http.listen(app.get('port'), function() {
+    console.log('正在监听3000端口');
 });

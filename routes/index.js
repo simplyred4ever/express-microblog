@@ -3,6 +3,7 @@
  */
 var Post = require('../models/post.js');
 var markdown = require('markdown').markdown;
+var moment = require("moment");
 
 module.exports = function(app) {
     var routes = ['./reg', './login', './logout', './post', './user', './file'];
@@ -19,6 +20,7 @@ module.exports = function(app) {
 
             var markdownPosts = [];
             for (var post of posts) {
+              post.time = moment(post.time).format("YYYY-MM-DD HH:mm:ss");
               if (!post.post.match(/(\$\$.*\$\$)/)) {
                 console.log(post.post);
                 post.post = post.post.replace(/\\\(/g, '\\\\(').replace(/\\\)/g, '\\\\)');

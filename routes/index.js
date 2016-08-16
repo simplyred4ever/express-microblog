@@ -2,6 +2,7 @@
  * GET home page.
  */
 var Post = require('../models/post.js');
+var markdown = require('markdown').markdown;
 
 module.exports = function(app) {
     var routes = ['./reg', './login', './logout', './post', './user', './file'];
@@ -16,10 +17,15 @@ module.exports = function(app) {
                 posts = [];
             }
 
+            var markdownPosts = [];
+            for (var post of posts) {
+              post.post = markdown.toHTML(post.post);
+              markdownPosts.push(post);
+            }
             res.render('index', {
                 title: '首页',
                 csrfToken: req.csrfToken(),
-                posts: posts
+                posts: markdownPosts
             });
         });
     });

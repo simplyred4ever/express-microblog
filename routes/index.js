@@ -19,15 +19,19 @@ module.exports = function(app) {
             }
 
             var markdownPosts = [];
+
             for (var post of posts) {
-              post.time = moment(post.time).format("YYYY-MM-DD HH:mm:ss");
-              if (!post.post.match(/(\$\$.*\$\$)/)) { // 对公式不转码，由页面mathjax
-                console.log(post.post);
-                post.post = post.post.replace(/\\\(/g, '\\\\(').replace(/\\\)/g, '\\\\)');
-                post.post = markdown.toHTML(post.post);
-                console.log(post.post);
-              }
-              markdownPosts.push(post);
+                post.time = moment(post.time).format("YYYY-MM-DD HH:mm:ss");
+                if (!post.post.match(/(\$\$.*\$\$)/)) {
+                    // 对公式不转码，由页面mathjax
+                    if (post.post.match(/^sequenceDiagram/) || post.post.match(/^graph/)) {
+                        post.post = '<div class="mermaid">' + post.post + '</div>';
+                    } else {
+                        post.post = markdown.toHTML(post.post);
+                    }
+                }
+
+                markdownPosts.push(post);
             }
             res.render('index', {
                 title: '首页',

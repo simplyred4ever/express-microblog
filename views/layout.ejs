@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/stylesheets/bootstrap.css" />
     <link rel="stylesheet" href="/stylesheets/bootstrap-theme.css">
+    <link rel="stylesheet" href="/stylesheets/mermaid.css">
 	<!--[if lt IE 9]>
       <script type="text/javascript" src="/javascripts/html5shiv.min.js"></script>
       <script type="text/javascript" src="/javascripts/respond.min.js"></script>
@@ -14,6 +15,7 @@
     <script type="text/javascript" src="/javascripts/jquery.js"></script>
     <script type="text/javascript" src="/javascripts/bootstrap.js"></script>
     <script type="text/javascript" src="/javascripts/socket.io.js"></script>
+    <script type="text/javascript" src="/javascripts/mermaid.js"></script>
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
         tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
@@ -64,10 +66,12 @@
 	</div>
   <% if (user) { %>
   <script>
+
 var socket;
 var username = '<%= user.name %>';
 $(document).ready(function(){
   connect();
+  mermaid.initialize({startOnLoad:true});
 });
 var firstConnect = true;
 

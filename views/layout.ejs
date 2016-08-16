@@ -8,12 +8,18 @@
     <link rel="stylesheet" href="/stylesheets/bootstrap.css" />
     <link rel="stylesheet" href="/stylesheets/bootstrap-theme.css">
 	<!--[if lt IE 9]>
-      <script src="/javascripts/html5shiv.min.js"></script>
-      <script src="/javascripts/respond.min.js"></script>
+      <script type="text/javascript" src="/javascripts/html5shiv.min.js"></script>
+      <script type="text/javascript" src="/javascripts/respond.min.js"></script>
     <![endif]-->
-    <script src="/javascripts/jquery.js"></script>
-    <script src="/javascripts/bootstrap.js"></script>
-    <script src="/javascripts/socket.io.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery.js"></script>
+    <script type="text/javascript" src="/javascripts/bootstrap.js"></script>
+    <script type="text/javascript" src="/javascripts/socket.io.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+      });
+    </script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
   </head>
   <body>
 
@@ -50,6 +56,9 @@
 	  <%- body %>
 
 	  <hr />
+    <p>
+      When $a \ne 0$, there are two solutions to \(ax^2 + bx + c = 0\) and they are $$x = {-b \pm \sqrt{b^2-4ac} \over 2a}.$$
+    </p>
 	  <footer>
 		<p>
 			<a href="https://github.com/simplyred4ever/express-microblog" target="_blank">express-microblog</a> 2016

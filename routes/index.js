@@ -19,7 +19,12 @@ module.exports = function(app) {
 
             var markdownPosts = [];
             for (var post of posts) {
-              post.post = markdown.toHTML(post.post);
+              if (!post.post.match(/(\$\$.*\$\$)/)) {
+                console.log(post.post);
+                post.post = post.post.replace(/\\\(/g, '\\\\(').replace(/\\\)/g, '\\\\)');
+                post.post = markdown.toHTML(post.post);
+                console.log(post.post);
+              }
               markdownPosts.push(post);
             }
             res.render('index', {

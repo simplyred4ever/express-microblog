@@ -5,7 +5,13 @@
   <div class="col-lg-4">
     <h2><a href="/u/<%= post.user %>"><%= post.user %></a> ：</h2>
     <p><small><%= post.time %></small></p>
-    <p><%- post.post %></p>
+  <% if (post.post.match(/(\$\$.*\$\$)/)) {%>
+    <p class="mathjax"><%- post.post %></p>
+  <% } else if (post.post.match(/^(sequenceDiagram|gantt|graph)/)) {%>
+    <p class="mermaid"><%- post.post %></p>
+  <% } else { %>
+    <p class="markdown"><%- post.post %></p>
+  <%} %>
   </div>
 <% if (index % 3 == 2) { %>
     </div><!-- end row -->

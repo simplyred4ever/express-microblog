@@ -18,25 +18,13 @@ module.exports = function(app) {
                 posts = [];
             }
 
-            var markdownPosts = [];
-
             for (var post of posts) {
                 post.time = moment(post.time).format("YYYY-MM-DD HH:mm:ss");
-                if (!post.post.match(/(\$\$.*\$\$)/)) {
-                    // 对公式不转码，由页面mathjax
-                    if (post.post.match(/^(sequenceDiagram|gantt|graph)/)) {
-                        post.post = '<div class="mermaid">' + post.post + '</div>';
-                    } else {
-                        post.post = markdown.toHTML(post.post);
-                    }
-                }
-
-                markdownPosts.push(post);
             }
             res.render('index', {
                 title: '首页',
                 csrfToken: req.csrfToken(),
-                posts: markdownPosts
+                posts: posts
             });
         });
     });

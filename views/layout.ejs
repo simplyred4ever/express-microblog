@@ -16,6 +16,7 @@
     <script type="text/javascript" src="/javascripts/bootstrap.js"></script>
     <script type="text/javascript" src="/javascripts/socket.io.js"></script>
     <script type="text/javascript" src="/javascripts/mermaid.js"></script>
+    <script type="text/javascript" src="/javascripts/markdown.js"></script>
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
         tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
@@ -61,6 +62,12 @@
 	  <footer>
 		<p>
 			<a href="https://github.com/simplyred4ever/microblog" target="_blank">express-microblog</a> 2016
+      <a href="http://www.expressjs.com.cn/" target="_blank">express.js 4.x web框架</a>
+      <a href="http://es6.ruanyifeng.com/" target="_blank">es6语法</a>
+      <a href="https://github.com/socketio/socket.io" target="_blank">socket.io(基于WebSocket)</a>
+      <a href="http://www.appinn.com/markdown/#link" target="_blank">markdown轻文本</a>
+      <a href="http://docs.mathjax.org/en/latest/start.html" target="_blank">mathjax公式</a>
+      <a href="https://github.com/knsv/mermaid" target="_blank">mermaid图</a>
 		</p>
 	  </footer>
 	</div>
@@ -72,6 +79,9 @@ var username = '<%= user.name %>';
 $(document).ready(function(){
   connect();
   mermaid.initialize({startOnLoad:true});
+  $('.markdown').each(function(){
+    $(this).html(markdown.toHTML($(this).text()));
+  });
 });
 var firstConnect = true;
 

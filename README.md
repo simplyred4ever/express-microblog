@@ -4,4 +4,4 @@
 * express.js 4.x
 * es6
 * socket.io
-* markdown/mathjax
+* markdown / mathjax / mermaid

@@ -2,27 +2,35 @@
 <html>
   <head>
     <title><%= title %> - Microblog</title>
-	<meta charset="utf-8">
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/stylesheets/bootstrap.css" />
-    <link rel="stylesheet" href="/stylesheets/bootstrap-theme.css">
-    <link rel="stylesheet" href="/stylesheets/mermaid.css">
-	<!--[if lt IE 9]>
+    <!--<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" />-->
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" />
+
+    <!--<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">-->
+    <link rel="stylesheet" href="/stylesheets/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/mermaid/6.0.0/mermaid.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/mermaid/6.0.0/mermaid.forest.min.css">
+    <!--[if lt IE 9]>
       <script type="text/javascript" src="/javascripts/html5shiv.min.js"></script>
       <script type="text/javascript" src="/javascripts/respond.min.js"></script>
     <![endif]-->
-    <script type="text/javascript" src="/javascripts/jquery.js"></script>
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <!--<script type="text/javascript" src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
     <script type="text/javascript" src="/javascripts/bootstrap.js"></script>
-    <script type="text/javascript" src="/javascripts/socket.io.js"></script>
-    <script type="text/javascript" src="/javascripts/mermaid.js"></script>
+
+    <script type="text/javascript" src="//cdn.bootcss.com/socket.io/1.4.8/socket.io.min.js"></script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mermaid/6.0.0/mermaid.js"></script>
+    <!--<script type="text/javascript" src="/javascripts/socket.io.js"></script>-->
     <script type="text/javascript" src="/javascripts/markdown.js"></script>
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
-        tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+        tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},
+        processClass: 'mathjax'
       });
     </script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
   </head>
   <body>
 
@@ -77,8 +85,21 @@
 var socket;
 var username = '<%= user.name %>';
 $(document).ready(function(){
-  connect();
-  mermaid.initialize({startOnLoad:true});
+  try{
+    connect();
+  } catch(ex){
+
+  }
+  try{
+    mermaid.initialize({
+      startOnLoad: true,
+      htmlLabels: true
+    });
+  } catch(ex){
+
+  }
+
+
   $('.markdown').each(function(){
     $(this).html(markdown.toHTML($(this).text()));
   });

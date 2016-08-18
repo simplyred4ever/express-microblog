@@ -6,13 +6,13 @@ posts.forEach(function(post, index) {
 <% if (post.post.match(/(\$\$.*\$\$)/)) {
   classType = 'mathjax';
   size = 'col-lg-4';
-} else if (post.post.match(/^(classDiagram|sequenceDiagram|gantt|graph)/)) {
+} else if (post.post.match(/^(sequenceDiagram|gantt|graph)/)) {
    classType = 'mermaid';
    size = 'col-lg-12';
- } else {
-   classType = 'markdown';
-   size = 'col-lg-4';
- } %>
+} else {
+ classType = 'markdown';
+ size = 'col-lg-4';
+} %>
   <div class="<%=size %>">
     <h2><a href="/u/<%= post.user %>"><%= post.user %></a> ：</h2>
     <p><small><%= post.time %></small></p>

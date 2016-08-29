@@ -1,15 +1,15 @@
 /*
  * 发言
  */
-var Post = require('../models/post.js');
-var routesUtil = require('./routesUtil.js');
+const Post = require('../models/post.js');
+const routesUtil = require('./routesUtil.js');
 
 module.exports = function(app) {
-    app.route('/post').all(routesUtil.checkLogin).post(function(req, res) {
-        var currentUser = req.session.user;
-        var post = new Post(currentUser.name, req.body.post);
+    app.route('/post').all(routesUtil.checkLogin).post((req, res) => {
+        let currentUser = req.session.user;
+        let post = new Post(currentUser.name, req.body.post);
 
-        post.save(function(err) {
+        post.save(err => {
             if (err) {
                 req.flash('error', err);
 

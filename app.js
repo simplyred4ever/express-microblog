@@ -1,26 +1,26 @@
 /**
  * Module dependencies.
  */
-var express = require('express'); // 引用express框架
-var partials = require('express-partials'); // Express3.0中引用layout.ejs时
-var routes = require('./routes'); // 路由控制，找routes.js或routes/index.js
-var path = require('path'); // 路径模块
-var favicon = require('serve-favicon');
-var app = express(); // 使用框架
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-var session = require('express-session');
-var MongoStore = require('connect-mongo')(session); // 连mongo数据库*/
-var settings = require('./settings'); // 引用settings.js*/
-var flash = require('connect-flash'); // 使用页面闪存
-var mongodb = require('./models/db');
-var morgan = require('morgan'); //logger模块的这个新名字真是神奇
-var compression = require('compression'); //压缩中间件，deflate、gzip等格式
-var methodOverride = require('method-override'); //重载方法
-var cookieParser = require('cookie-parser');
-var csrf = require('csurf');
-var errorHandler = require('errorHandler');
-var bodyParser = require('body-parser');
+const express = require('express'); // 引用express框架
+const partials = require('express-partials'); // Express3.0中引用layout.ejs时
+let routes = require('./routes'); // 路由控制，找routes.js或routes/index.js
+const path = require('path'); // 路径模块
+const favicon = require('serve-favicon');
+let app = express(); // 使用框架
+let http = require('http').Server(app);
+let io = require('socket.io')(http);
+const session = require('express-session');
+let MongoStore = require('connect-mongo')(session); // 连mongo数据库*/
+const settings = require('./settings'); // 引用settings.js*/
+const flash = require('connect-flash'); // 使用页面闪存
+const mongodb = require('./models/db');
+const morgan = require('morgan'); //logger模块的这个新名字真是神奇
+const compression = require('compression'); //压缩中间件，deflate、gzip等格式
+const methodOverride = require('method-override'); //重载方法
+const cookieParser = require('cookie-parser');
+const csrf = require('csurf');
+const errorHandler = require('errorHandler');
+const bodyParser = require('body-parser');
 
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views'); // 模板位置 MVC的V
@@ -37,7 +37,7 @@ app.use(csrf({
 }));
 app.use(methodOverride('_method')); // override with POST having ?_method=DELETE
 // error handler
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
     if (err.code !== 'EBADCSRFTOKEN') {
         return next(err);
     }
@@ -63,15 +63,15 @@ app.use(session({
         db: settings.DB
     })
 }));
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
     res.locals.user = req.session.user;
     res.locals.post = req.session.post;
 
-    var error = req.flash('error');
+    let error = req.flash('error');
 
     res.locals.error = error.length ? error : null;
 
-    var success = req.flash('success');
+    let success = req.flash('success');
 
     res.locals.success = success.length ? success : null;
     res.locals._csrf = req.session._csrf; // 防止csrf攻击
@@ -83,7 +83,7 @@ app.use(compression({
 app.use(express.static(path.join(__dirname, 'public'))); //设置静态文件目录
 app.io = io;
 routes(app); // 路由控制MVC的C
-app.on('close', function() {
+app.on('close', () => {
     mongodb.close();
 });
 app.use(errorHandler({
@@ -91,9 +91,9 @@ app.use(errorHandler({
     dumpExceptions: true,
     showStack: true
 }));
-io.on('connection', function(socket) {
+io.on('connection', socket => {
     console.log("Connection " + socket.id + " accepted.");
-    socket.on('disconnect', function() {
+    socket.on('disconnect', () => {
         console.log("Connection " + socket.id + " terminated.");
     });
 });

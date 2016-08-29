@@ -1,19 +1,14 @@
-
 /*
  * 登出
  */
-var routesUtil = require('./routesUtil.js');
+const routesUtil = require('./routesUtil.js');
 
-module.exports = function (app) {
-	
-	app.route('/logout')
-	.all(routesUtil.checkLogin)
-	.get(function (req, res) {
-		req.session.user = null; // 清除
-		req.flash('success', '登出成功');
-		res.redirect('/');
-	});
-	
+module.exports = function(app) {
+
+    app.route('/logout').all(routesUtil.checkLogin).get((req, res) => {
+        req.session.user = null; // 清除
+        req.flash('success', '登出成功');
+        res.redirect('/');
+    });
+
 };
-
-

@@ -2,8 +2,8 @@
 posts.forEach(function(post, index) {
   if (index % 3 == 0) { %>
     <div class="row">
-<%} %>
-<% if (post.post.match(/(\$\$.*\$\$)/)) {
+<%}
+ if (post.post.match(/(\$\$.*\$\$)/)) {
   classType = 'mathjax';
   size = 'col-lg-4';
 } else if (post.post.match(/^(sequenceDiagram|gantt|graph)/)) {
@@ -20,8 +20,8 @@ posts.forEach(function(post, index) {
   </div>
 <% if (index % 3 == 2) { %>
     </div><!-- end row -->
-<% } %>
-<%}) %>
-<% if (posts.length % 3 != 0) { %>
+<% }
+})
+ if (posts.length % 3 != 0) { %>
   </div><!-- end row -->
 <%} %>

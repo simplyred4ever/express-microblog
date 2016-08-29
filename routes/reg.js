@@ -1,23 +1,19 @@
-
 /*
  * GET home page.
  */
-var crypto = require('crypto'); //功能是加密并生成各种散列
-var User = require('../models/user.js');
-var routesUtil = require('./routesUtil.js');
+const crypto = require('crypto'); //功能是加密并生成各种散列
+const User = require('../models/user.js');
+const routesUtil = require('./routesUtil.js');
 
-module.exports = function (app) {
+module.exports = function(app) {
 
     // 注册
-	app.route('/reg')
-    .all(routesUtil.checkNotLogin)
-    .get(function (req, res) {
+    app.route('/reg').all(routesUtil.checkNotLogin).get((req, res) => {
         res.render('reg', {
-            title : '用户注册',
-			csrfToken : req.csrfToken()
+            title: '用户注册',
+            csrfToken: req.csrfToken()
         });
-    })
-    .post(function (req, res) {
+    }).post((req, res) => {
         //检验用户两次输入的口令是否一致
         if (req.body['password-repeat'] != req.body.password) {
             req.flash('error', '两次输入的口令不一致');
@@ -29,12 +25,12 @@ module.exports = function (app) {
         var password = md5.update(req.body.password).digest('base64');
 
         var newUser = new User({
-                name : req.body.username,
-                password : password
-            });
+            name: req.body.username,
+            password: password
+        });
 
         //检查用户名是否已经存在
-        User.get(newUser.name, function (err, user) {
+        User.get(newUser.name, (err, user) => {
             if (user) {
                 err = '用户已存在';
             }
@@ -43,7 +39,7 @@ module.exports = function (app) {
                 return res.redirect('/reg');
             }
             //如果不存在则新增用户
-            newUser.save(function (err) {
+            newUser.save(err => {
                 if (err) {
                     req.flash('error', err);
                     return res.redirect('/reg');

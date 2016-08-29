@@ -1,24 +1,26 @@
 /*
  * GET home page.
  */
-var Post = require('../models/post.js');
-var markdown = require('markdown').markdown;
-var moment = require("moment");
+const Post = require('../models/post.js');
+const {
+    markdown
+} = require('markdown');
+const moment = require("moment");
 
 module.exports = function(app) {
-    var routes = ['./reg', './login', './logout', './post', './user', './file'];
+    let routes = ['./reg', './login', './logout', './post', './user', './file'];
 
-    for (var i in routes) {
-        require(routes[i])(app);
+    for (let i of routes) {
+        require(i)(app);
     }
     // 首页
-    app.get('/', function(req, res) {
-        Post.get(null, function(err, posts) {
+    app.get('/', (req, res) => {
+        Post.get(null, (err, posts) => {
             if (err) {
                 posts = [];
             }
 
-            for (var post of posts) {
+            for (let post of posts) {
                 post.time = moment(post.time).format("YYYY-MM-DD HH:mm:ss");
             }
             res.render('index', {

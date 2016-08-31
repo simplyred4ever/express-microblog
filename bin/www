@@ -1,6 +1,18 @@
-var debug = require('debug')('microblog');
-var app = require('../app');
+const debug = require('debug')('microblog');
+const app = require('../app');
+const cluster = require('cluster');
+const numCPUs = require('os').cpus().length;
 
-app.http.listen(app.get('port'), function() {
-    console.log('正在监听3000端口');
-});
+if (cluster.isMaster) {
+  for (var i = 0; i < numCPUs; i++) {
+  cluster.fork();
+}
+  cluster.on('exit', (worker, code, signal) => {
+      console.log(`worker ${worker.process.pid} died`);
+    });
+} else {
+
+    app.http.listen(3000, function() {
+        console.log('正在监听3000端口');
+    });
+}

@@ -3,14 +3,14 @@
  */
 const express = require('express'); // 引用express框架
 const partials = require('express-partials'); // Express3.0中引用layout.ejs时
-let routes = require('./routes'); // 路由控制，找routes.js或routes/index.js
+const routes = require('./routes'); // 路由控制，找routes.js或routes/index.js
 const path = require('path'); // 路径模块
 const favicon = require('serve-favicon');
-let app = express(); // 使用框架
-let http = require('http').Server(app);
-let io = require('socket.io')(http);
+const app = express(); // 使用框架
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 const session = require('express-session');
-let MongoStore = require('connect-mongo')(session); // 连mongo数据库*/
+const MongoStore = require('connect-mongo')(session); // 连mongo数据库*/
 const settings = require('./settings'); // 引用settings.js*/
 const flash = require('connect-flash'); // 使用页面闪存
 const mongodb = require('./models/db');
@@ -91,11 +91,11 @@ app.use(errorHandler({
     dumpExceptions: true,
     showStack: true
 }));
-io.on('connection', socket => {
+/*io.on('connection', socket => {
     console.log("Connection " + socket.id + " accepted.");
     socket.on('disconnect', () => {
         console.log("Connection " + socket.id + " terminated.");
     });
-});
+});*/
 module.exports = app;
 module.exports.http = http;

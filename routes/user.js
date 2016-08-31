@@ -1,8 +1,8 @@
 /*
  * 用户页面
  */
-var User = require('../models/user.js');
-var Post = require('../models/post.js');
+const User = require('../models/user.js');
+const Post = require('../models/post.js');
 
 module.exports = function(app) {
 

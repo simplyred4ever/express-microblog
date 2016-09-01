@@ -3,15 +3,15 @@ posts.forEach(function(post, index) {
   if (index % 3 == 0) { %>
     <div class="row">
 <%}
- if (post.post.match(/(\$\$.*\$\$)/)) {
+ if (post.post.match(/(\$\$.*\$\$)/m)) {
   classType = 'mathjax';
-  size = 'col-lg-4';
+  size = 'col-lg-12';
 } else if (post.post.match(/^(sequenceDiagram|gantt|graph)/)) {
    classType = 'mermaid';
    size = 'col-lg-12';
 } else {
  classType = 'markdown';
- size = 'col-lg-4';
+ size = 'col-lg-12';
 } %>
   <div class="<%=size %>">
     <h2><a href="/u/<%= post.user %>"><%= post.user %></a> ：</h2>

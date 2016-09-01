@@ -3,6 +3,7 @@
  */
 const User = require('../models/user.js');
 const Post = require('../models/post.js');
+const moment = require("moment");
 
 module.exports = function(app) {
 
@@ -16,6 +17,9 @@ module.exports = function(app) {
                 if (err) {
                     req.flash('error', err);
                     return res.redirect('/');
+                }
+                for (let post of posts) {
+                    post.time = moment(post.time).format("YYYY-MM-DD HH:mm:ss");
                 }
                 res.render('user', {
                     title: user.name,

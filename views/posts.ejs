@@ -3,7 +3,7 @@ posts.forEach(function(post, index) {
   if (index % 3 == 0) { %>
     <div class="row">
 <%}
- if (post.post.match(/(\$\$.*\$\$)/m)) {
+ if (post.post.match(/^\$\$.*/)) {
   classType = 'mathjax';
   size = 'col-lg-12';
 } else if (post.post.match(/^(sequenceDiagram|gantt|graph)/)) {
@@ -13,15 +13,27 @@ posts.forEach(function(post, index) {
  classType = 'markdown';
  size = 'col-lg-12';
 } %>
-  <div class="<%=size %>">
+  <div class="<%=size %>" id="<%=post._id %>">
     <h2><a href="/u/<%= post.user %>"><%= post.user %></a> ：</h2>
-    <p><small><%= post.time %></small></p>
+    <p><small><%= post.time %></small>
+<% if (user && post.user == user.name) { %>
+    <span class="glyphicon glyphicon-trash" onclick="removePost('<%=post._id %>')"></span>
+<% } %>
+    </p>
     <p class="<%=classType %>"><%- post.post %></p>
   </div>
 <% if (index % 3 == 2) { %>
     </div><!-- end row -->
 <% }
-})
+});
  if (posts.length % 3 != 0) { %>
   </div><!-- end row -->
 <%} %>
+<script>
+function removePost(id) {
+  $.get('/post/' + id + '', null, function(response,status,xhr){
+    $('#' + id).remove();
+    alert(response.msg);
+  });
+}
+</script>

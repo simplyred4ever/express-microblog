@@ -9,7 +9,104 @@
     <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" />
     <![endif]-->
     <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="//cdn.bootcss.com/mermaid/6.0.0/mermaid.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/mermaid/6.0.0/mermaid.min.css"/>
+    <!--[if lt IE 9]>
+      <script type="text/javascript" src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script type="text/javascript" src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <!--[if !IE | (IE 9)]><!-->
+    <script type="text/javascript" src="//cdn.bootcss.com/socket.io/1.4.8/socket.io.min.js"></script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mermaid/6.0.0/mermaid.js"></script>
+    <!--<![endif]-->
+    <script type="text/javascript" src="//cdn.bootcss.com/markdown.js/0.5.0/markdown.min.js"></script>
+    <script type="text/javascript" src="/javascripts/latex2html5.min.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [["$","$"],["\\(","\\)"]],
+          processEscapes: true
+
+        },
+        MathML: {
+          extensions: ["content-mathml.js"]
+        },
+        processClass: 'mathjax',
+        TeX: {
+          equationNumbers: {
+            autoNumber: "AMS"
+          },
+          extensions: ["autobold.js", "AMSmath.js", "AMSsymbols.js"]
+        },
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX", "output/HTML-CSS"],
+        "HTML-CSS": { linebreaks: { automatic:true, width: "latex-container"} }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script>
+
+  var socket, username;
+  $(document).ready(function(){
+  <% if (user) { %>
+    username = '<%= user.name %>';
+    try{
+      //connect();
+    } catch(ex){
+
+    }
+  <% } %>
+    try{
+      mermaid.initialize({
+        startOnLoad: true,
+        htmlLabels: true
+      });
+    } catch(ex){
+
+    }
+
+    $('.markdown').each(function(){
+      $(this).html(markdown.toHTML($(this).text()));
+    });
+  });
+  var firstConnect = true;
+
+  function connect() {
+    if (firstConnect) {
+      //io.set('transports', ['websocket','flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']);
+      socket = io.connect(window.location.protocol + '//' + window.location.host);//null
+      socket.on('message', function (data) {
+          message(data);
+      });
+      /*socket.on('connect', function () {
+          status_update("Connected to Server");
+      });
+      socket.on('disconnect', function () {
+          status_update("Disconnected from Server");
+      });*/
+      firstConnect = false;
+    }
+  }
+
+  function disconnect() {
+    socket.disconnect();
+  }
+
+  function message(data) {
+    if (data.exclude == 'username') {
+      return;
+    }
+    if (data.msg == 'reload') {
+      window.location.reload();
+    }
+  }
+
+  /*function status_update(txt) {
+    $('#status').html(txt);
+  }*/
+    </script>
   </head>
   <body>
 
@@ -58,86 +155,5 @@
 		</p>
 	  </footer>
 	</div>
-  <!--[if lt IE 9]>
-    <script type="text/javascript" src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script type="text/javascript" src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-  <![endif]-->
-  <script type="text/javascript" src="//cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-  <script type="text/javascript" src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-  <!--[if !IE | (IE 9)]><!-->
-  <script type="text/javascript" src="//cdn.bootcss.com/socket.io/1.4.8/socket.io.min.js"></script>
-  <script type="text/javascript" src="//cdn.bootcss.com/mermaid/6.0.0/mermaid.js"></script>
-  <!--<![endif]-->
-  <script type="text/javascript" src="//cdn.bootcss.com/markdown.js/0.5.0/markdown.min.js"></script>
-
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},
-      processClass: 'mathjax'
-    });
-  </script>
-  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-  <script>
-
-var socket, username;
-$(document).ready(function(){
-<% if (user) { %>
-  username = '<%= user.name %>';
-  try{
-    //connect();
-  } catch(ex){
-
-  }
-<% } %>
-  try{
-    mermaid.initialize({
-      startOnLoad: true,
-      htmlLabels: true
-    });
-  } catch(ex){
-
-  }
-
-  $('.markdown').each(function(){
-    $(this).html(markdown.toHTML($(this).text()));
-  });
-});
-var firstConnect = true;
-
-function connect() {
-  if (firstConnect) {
-    //io.set('transports', ['websocket','flashsocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']);
-    socket = io.connect(window.location.protocol + '//' + window.location.host);//null
-    socket.on('message', function (data) {
-        message(data);
-    });
-    /*socket.on('connect', function () {
-        status_update("Connected to Server");
-    });
-    socket.on('disconnect', function () {
-        status_update("Disconnected from Server");
-    });*/
-    firstConnect = false;
-  }
-}
-
-function disconnect() {
-  socket.disconnect();
-}
-
-function message(data) {
-  if (data.exclude == 'username') {
-    return;
-  }
-  if (data.msg == 'reload') {
-    window.location.reload();
-  }
-}
-
-/*function status_update(txt) {
-  $('#status').html(txt);
-}*/
-  </script>
   </body>
 </html>

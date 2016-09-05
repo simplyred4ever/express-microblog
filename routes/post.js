@@ -24,4 +24,15 @@ module.exports = function(app) {
             });
         });
     });
+    app.route('/post/:id').all(routesUtil.checkLogin).get((req, res) => {
+        Post.remove(req.params.id, err => {
+            if (err) {
+                req.flash('error', err);
+
+                return res.redirect('/');
+            }
+            res.send({msg: '删除成功！'});
+        });
+    });
+
 };

@@ -11,8 +11,17 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" />
     <link rel="stylesheet" href="//cdn.bootcss.com/mermaid/6.0.0/mermaid.min.css"/>
     <!--[if lt IE 9]>
-      <script type="text/javascript" src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script type="text/javascript" src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script>
+    (function(){
+      var ef = function(){};
+      window.console = window.console || {log:ef,warn:ef,error:ef,dir:ef};
+    }());
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script type="text/javascript" src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv-printshiv.min.js"></script>
+    <script type="text/javascript" src="//cdn.bootcss.com/es5-shim/4.5.9/es5-shim.js"></script>
+    <script type="text/javascript" src="//cdn.bootcss.com/es5-shim/4.5.9/es5-sham.js"></script>
+    <script type="text/javascript" src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script type="text/javascript" src="//cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
     <script type="text/javascript" src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
@@ -20,9 +29,9 @@
     <!--[if !IE | (IE 9)]><!-->
     <script type="text/javascript" src="//cdn.bootcss.com/socket.io/1.4.8/socket.io.min.js"></script>
     <script type="text/javascript" src="//cdn.bootcss.com/mermaid/6.0.0/mermaid.js"></script>
+    <script type="text/javascript" src="/javascripts/latex2html5.min.js"></script>
     <!--<![endif]-->
     <script type="text/javascript" src="//cdn.bootcss.com/markdown.js/0.5.0/markdown.min.js"></script>
-    <script type="text/javascript" src="/javascripts/latex2html5.min.js"></script>
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
         tex2jax: {

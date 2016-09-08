@@ -216,5 +216,4 @@ pip-log.txt
 .mr.developer.cfg
 
 #Sample
-public/sample/
 npm-debug.log.*

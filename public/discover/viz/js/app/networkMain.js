@@ -43,7 +43,6 @@
 		}
 	});
 
-	//load()
 	// 不需要使用的全局参数放在后面（'bootstrap-contextmenu'）
 	require(['jquery', 'd3', 'crossfilter', 'cola', 'jsx!react/ReactUtil', 'bootstrap-contextmenu'],
 			function($, d3, crossfilter, cola, ReactUtil) {
@@ -72,26 +71,28 @@
 		var efilter = crossfilter();
 		var nodesDegDim = null;
 		var ndegVal = 1;
+		var windowWidth = $(window, parent).width() - 320;
+		var windowHeight = $(window, parent).height()
 		var mode = {
 			all : {
-				width : window.innerWidth - 320,
-				height : window.innerHeight,
+				width : windowWidth,
+				height : windowHeight,
 				labelVisibility : false,
 				nodeRadius : 6,
 				charge : -120,
 				linkDistance : 120
 			},
 			child : {
-				width : window.innerWidth - 320,
-				height : window.innerHeight,
+				width : windowWidth,
+				height : windowHeight,
 				labelVisibility : false,
 				nodeRadius : 10,
 				charge : -120,
 				linkDistance : 120
 			},
 			adjacent : {
-				width : window.innerWidth - 320,
-				height : window.innerHeight,
+				width : windowWidth,
+				height : windowHeight,
 				labelVisibility : false,
 				nodeRadius : 10,
 				charge : -120,
@@ -115,7 +116,9 @@
 		window.fullGraph = function fullGraph() {
 			currentMode = mode.all;
 			d3.select('#container>svg').remove();
-			d3.json('/discover/rest/networkTemp/getData.discover', drawGraph);
+			//d3.json('/discover/rest/networkTemp/getData.discover', drawGraph);
+			d3.json('/discover/data/miserables.json', drawGraph);
+
 		}
 		window.fullGraph();
 
@@ -157,6 +160,9 @@
 							'	<feMergeNode in="litPaint"/></feMerge></filter></defs>'].join(''));
 
 			linked = {};
+			graph.nodes.forEach(function(d) {
+				d.id = d.id || d.name;
+			});
 			graph.edges.forEach(function(d) {
 				d.from = graph.nodes[d.source].id;
 				d.to = graph.nodes[d.target].id;
@@ -191,10 +197,10 @@
 			}
 
 			link = svg.selectAll('.link').data(graph.edges).enter().append('path').classed('link', true).attr('id', function(d) {
-				return 'link' + d.id;
-			}).style('stroke-width', function(d) {
-				return d.weight | 1;
-			}).style('stroke', function(d) {
+				return 'link' + d.source.id + d.target.id;
+			}).attr('stroke-width', function(d) {
+				return 1;//d.weight | 1;
+			}).attr('stroke', function(d) {
 				return d3.rgb(d.source.color);
 			}).attr('marker-mid', currentMode.undirected ? '' : 'url(#end-arrow)');
 
@@ -202,7 +208,7 @@
 				return 'node' + d.id;
 			}).attr('r', function(d) {
 				return d.r;
-			}).style('fill', function(d) {
+			}).attr('fill', function(d) {
 				return d.color;
 			}).call(force.drag().on("dragstart", function(d, i) {
 				dragging = true;

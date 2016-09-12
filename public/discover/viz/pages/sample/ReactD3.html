@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:v="urn:schemas-microsoft-com:vml">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="pragram" content="no-cache">
@@ -10,18 +10,10 @@
 <link rel="stylesheet" type='text/css' href="/discover/viz/css/bootstrap.min.css">
 <link rel="stylesheet" type='text/css' href="/discover/viz/css/d3.css">
 <style>
-#onlyInstanceDisplay {
-	top: 0;
-	width: 160px;
-}
 
 .node {
 	stroke: white;
 	stroke-width: 2px;
-}
-
-.uiwidget {
-	top: 0;
 }
 
 .node.selected {
@@ -39,7 +31,8 @@
 	from {
 		stroke-opacity:0.5;
 	}
-			to {
+
+	to {
 		stroke-opacity: 1;
 	}
 }
@@ -118,25 +111,8 @@
 	float: left;
 	display: block;
 }
-
-.padding0 {
-	padding: 0;
-}
-
-.paddingleft5 {
-	padding-left: 10px;
-}
-
-li > input , li > output{
-	display: inline !important;
-	margin-right: 10px;
-	vertical-align: middle;
-}
-
-.list-group-item{
-	padding: 5px 15px ;
-}
 </style>
+
 <script src="/discover/viz/js/d3.v3.js"></script>
 <script src="/discover/viz/js/react/JSXTransformer.js"></script>
 <script src="/discover/viz/js/react/react-with-addons.min.js"></script>

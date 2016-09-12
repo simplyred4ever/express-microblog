@@ -29,7 +29,8 @@
 
 		function redrawAll() {
 
-			d3.json('/discover/rest/network/getCategorys.discover', drawGraph);
+			//d3.json('/discover/rest/network/getCategorys.discover', drawGraph);
+			d3.json('/discover/data/miserables.json', drawGraph);
 
 		}
 
@@ -41,13 +42,14 @@
 				d = graph.nodes[i];
 				delete d.x;
 				delete d.y;
+				d.id = d.id || d.name;
 				d.label = d.name;
 				d.title = d.name;
 				c = color(d.group);
 				d.color = c;
-				d.size = 6 + Math.sqrt(Math.sqrt(d.weight || 0));
+				d.size = 6;
 				d.font = {
-					size : 16 + Math.sqrt(Math.sqrt(d.weight || 0))
+					size : 16
 				}
 			}
 

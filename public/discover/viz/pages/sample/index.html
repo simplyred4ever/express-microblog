@@ -1,3 +1,4 @@
+<!doctype html>
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -9,6 +10,10 @@
 <link rel='stylesheet' href='/discover/viz/css/bootstrap.css' />
 <title>知识发现</title>
 <style>
+html, body {
+	height: 100%;
+	width: 100%
+}
 :-webkit-full-screen body {
 	height: 100%;
 	width: 100%
@@ -100,7 +105,7 @@
 						<li><a href="#" onclick="changeFrame('Force1')">本体网络</a></li>
 						<li><a href="#" onclick="changeFrame('Force12')">本体网络2</a></li>
 						<li><a href="#" onclick="changeFrame('ForceCA')">引文网络</a></li>
-						<li><a href="#" onclick="changeFrame('ForceWiki')">Wiki网络</a></li>				
+						<li><a href="#" onclick="changeFrame('ForceWiki')">Wiki网络</a></li>
 						<li><a href="#">知识库-术语</a></li>
 						<li><a href="#">人立方</a></li>
 						<li><a href="#">智立方</a></li>
@@ -169,6 +174,19 @@
 	<iframe id="sample" src="" style="width: 100%; height: 100%; border: 0; overflow: hidden;"></iframe>
 	<iframe id="wiki" src="" style="width: 100%; border: 0; display: none;"></iframe>
 	<script src="/discover/viz/js/jquery.js"></script>
+	<!--[if lt IE 9]>
+	<script>
+	(function(){
+	  var ef = function(){};
+	  window.console = window.console || {log:ef,warn:ef,error:ef,dir:ef};
+	}());
+	</script>
+	<script type="text/javascript" src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script type="text/javascript" src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv-printshiv.min.js"></script>
+	<script type="text/javascript" src="//cdn.bootcss.com/es5-shim/4.5.9/es5-shim.js"></script>
+	<script type="text/javascript" src="//cdn.bootcss.com/es5-shim/4.5.9/es5-sham.js"></script>
+	<script type="text/javascript" src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
 	<script src="/discover/viz/js/bootstrap.min.js"></script>
 
 
@@ -257,6 +275,9 @@
 		function setUp (){
 			changeFrame("SetUp");
 		}
+		$(document).ready(function(){
+			$('#sample').width($(window).width()).height($(window).height() - 50);
+		});
 	</script>
 </body>
 </html>

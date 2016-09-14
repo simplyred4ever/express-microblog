@@ -81,7 +81,8 @@
     });
 
     $('.remove-post').click(function(){
-        var id = $(this).parent().attr(id);
+        var id = $(this).attr('data-id');
+        alert(id);
         $.get('/post/' + id + '', null, function(response,status,xhr){
           $('#' + id).remove();
           alert(response.msg);

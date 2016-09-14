@@ -20,7 +20,7 @@ class MessageItem extends React.Component {
 		}
 		let removeButton = '';
 		if (user && item.user == user.name) {
-			removeButton = <span className="glyphicon glyphicon-trash remove-post"></span>
+			removeButton = <span className="glyphicon glyphicon-trash remove-post" data-id={item._id}></span>
 		}
 		return (
 			<div className="col-lg-12" id={item._id}>

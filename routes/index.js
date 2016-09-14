@@ -6,6 +6,8 @@ const {
     markdown
 } = require('markdown');
 const moment = require("moment");
+const React = require('react');
+const PostList = require('../public/reactjs/post.js');
 
 module.exports = function(app) {
     let routes = ['./reg', './login', './logout', './post', './user', './file'];
@@ -19,14 +21,13 @@ module.exports = function(app) {
             if (err) {
                 posts = [];
             }
-
             for (let post of posts) {
                 post.time = moment(post.time).format("YYYY-MM-DD HH:mm:ss");
             }
             res.render('index', {
                 title: '首页',
                 csrfToken: req.csrfToken(),
-                posts: posts
+                posts: PostList(posts, req.session.user) //posts
             });
         });
     });

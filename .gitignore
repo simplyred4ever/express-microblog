@@ -199,6 +199,7 @@ eggs/
 parts/
 var/
 sdist/
+node_modules/
 develop-eggs/
 .installed.cfg
 

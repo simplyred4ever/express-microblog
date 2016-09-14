@@ -113,7 +113,7 @@ var LinkAccessor = (function () {
     return LinkAccessor;
 })();
 
-d3.json("graphdata/miserables.json", function (error, graph) {
+d3.json("/discover/data/miserables.json", function (error, graph) {
     var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     var renderer = new THREE.WebGLRenderer({ antialias: true });

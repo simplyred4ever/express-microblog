@@ -1,6 +1,6 @@
 重写nodejs开发指南－微博系统
 ---------
-
+* [homepage](https://simplyred4ever.github.io/)
 * [express.js 4.x](http://www.expressjs.com.cn/)
 * [es6](http://es6.ruanyifeng.com/)
 * [socket.io](https://github.com/socketio/socket.io)

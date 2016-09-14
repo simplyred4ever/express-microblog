@@ -96,7 +96,8 @@
 			});
 		});
 
-		d3.json('/discover/rest/networkTemp/getData.discover', function(err, data) {
+		//d3.json('/discover/rest/networkTemp/getData.discover', function(err, data) {
+		d3.json('/discover/data/miserables.json', function(err, data) {
 
 			data.nodes.forEach(function(d, i) {
 				d.id = i;

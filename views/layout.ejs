@@ -79,6 +79,15 @@
     $('.markdown').each(function(){
       $(this).html(markdown.toHTML($(this).text()));
     });
+
+    $('.remove-post').click(function(){
+        var id = $(this).parent().attr(id);
+        $.get('/post/' + id + '', null, function(response,status,xhr){
+          $('#' + id).remove();
+          alert(response.msg);
+        });
+    })
+
   });
   var firstConnect = true;
 

@@ -1,7 +1,7 @@
 const gulp = require('gulp');
 const react = require('gulp-react');
 const runSequence = require('run-sequence');
-const browserSync = require('browser-sync');
+const browserSync = require('browser-sync').create();
 const nodemon = require('gulp-nodemon');
 
 gulp.task('react', () => {
@@ -19,12 +19,15 @@ gulp.watch('public/reactjsx/*.jsx', ['react']);
 gulp.task('default', ['browser-sync'], () => {});
 
 gulp.task('browser-sync', ['nodemon'], () => {
-    browserSync.init(null, {
-        proxy: "http://localhost:3000",
+    browserSync.init({
         files: ["public/**/*.*"],
-        browser: "google chrome",
-        port: 7000
+        browser: ["chrome"], //["chrome", "firefox", "opera"],
+        proxy: "localhost:80",
+        motify: false,
+        port: 5000
     });
+
+    gulp.watch(["public/**/*.*"]).on("change", browserSync.reload);
 });
 
 gulp.task('nodemon', ['react'], (cb) => {

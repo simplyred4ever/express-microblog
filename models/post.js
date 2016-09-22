@@ -2,7 +2,9 @@ const mongodb = require('./db');
 const co = require("co");
 const util = require('util');
 const settings = require('../settings');
-const {ObjectID} = require('mongodb');
+const {
+    ObjectID
+} = require('mongodb');
 
 class Post {
     constructor(username, post, time, _id) {
@@ -65,7 +67,9 @@ class Post {
         co(function*() {
             var db = yield mongodb.connect(settings.URL);
             var collection = yield db.collection('posts');
-            yield collection.findAndRemove({_id:new ObjectID(_id)});
+            yield collection.findAndRemove({
+                _id: new ObjectID(_id)
+            });
             yield db.close();
             callback(null);
             return null;

@@ -15,5 +15,5 @@ $(document).ready(function() {
         }
     };
     ko.applyBindings(viewModel, document.getElementById('timeline'));
-
+    $('button').click();
 });

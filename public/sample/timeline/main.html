@@ -26,6 +26,10 @@
             padding-left: 60px;
         }
 
+        .milestone {
+            width: 160px;
+        }
+
         .record {
             position: absolute;
             background-color: white;
@@ -44,7 +48,15 @@
             padding-left: 20px;
         }
 
-        .record p,
+        .record p {
+            clear: both;
+        }
+
+        .record span {
+            display: block;
+            float: left;
+        }
+
         .record a {
             word-break: keep-all;
             /* 不换行 */
@@ -56,8 +68,21 @@
             /* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
         }
 
+        .more {
+            display: block;
+            float: right;
+            width: 160px;
+        }
+
         .record li {
             list-style-type: none;
+        }
+
+        .record img {
+            position: absolute;
+            left: 0;
+            top: 0;
+            cursor: pointer;
         }
     </style>
     <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
@@ -88,38 +113,9 @@
                 <button name="search" data-bind="click: search">查询</button>
             </div>
         </fieldset>
-        <!-- ko foreach: {data: myItems, as: 'item'} -->
-        <div class="record" data-bind="style:{'left': item.x + 'px' , 'top': item.y + 'px', 'height': $root.itemHeight + 'px'},event:{mouseout:function(data, event){$root.unhighlight(event)}}">
-            <!-- ko if: item.type=='in' -->
-            <div data-bind="style:{'height':($root.itemHeight - (item.data.length + 2) * $root.rowHeight)+'px'}"></div>
-            <div>
-                <p><span style="display:block;float:left" data-bind="text: item.name">&nbsp;</span><a style="display:block;float:right;width:70px;" data-bind="attr: {'href': item.id}">更多信息</a></p>
-                <p data-bind="text: item.desc"></p>
-                <ul data-bind="foreach: { data: item.data, as: 'doc'}">
-                    <li>
-                        <a data-bind="attr: {'href': doc.url}, text: doc.name"></a>
-                    </li>
-                </ul>
-            </div>
-            <img style="position:absolute;left:0px;top:0px;" data-bind="attr:{'src':'img/arrow_green.png'},event:{mouseover:function(data, event) {$root.highlight(event)}}" />
-            <!-- /ko -->
-            <!-- ko if: item.type=='out' -->
-            <div>
-                <p><span style="display:block;float:left" data-bind="text: item.name">&nbsp;</span><a style="display:block;float:right;width:70px;" data-bind="attr: {'href': item.id}">更多信息</a></p>
-                <p data-bind="text: item.desc"></p>
-                <ul data-bind="foreach: { data: item.data, as: 'doc'}">
-                    <li>
-                        <a data-bind="attr: {'href': doc.url}, text: doc.name"></a>
-                    </li>
-                </ul>
-            </div>
-            <img style="position:absolute;left:0px;top:0px;" data-bind="attr:{'src':'img/arrow_red.png'},event:{mouseover:function(data, event) {$root.highlight(event)}}" />
-            <!-- /ko -->
-        </div>
-        <!-- /ko -->
-        <img style="position:absolute;left:10px;top:200px;" src="img/arrow_yellow.png" data-bind="visible:myItems().length > 0"/>
+        <img style="position:absolute;left:10px;top:200px;" src="img/arrow_yellow.png" data-bind="click:unhighlight" />
         <!-- ko foreach: {data: myBigScales, as: 'scale'} -->
-        <span class="scale" data-bind="style:{'left': scale.value + 'px', 'top': '250px'}">
+        <span class="scale" data-bind="style:{'left': scale.value + 'px', 'top': '253px'}">
             <span style="margin-left:-3px;vertical-align: top;"data-bind="text: scale.text">&nbsp;</span>
         </span>
         <!-- /ko -->
@@ -127,6 +123,41 @@
         <span class="scale" data-bind="style:{'left': scale.value + 'px', 'top': '264px'}">
             <img style="margin-left:-8px;margin-top:-2px" src="img/scale.png"/><span style="margin-left:2px;vertical-align: top;"data-bind="text: scale.text">&nbsp;</span>
         </span>
+        <!-- /ko -->
+        <!-- ko foreach: {data: myMilestones, as: 'milestone'} -->
+        <div class="milestone scale" data-bind="style:{'left': milestone.value + 'px', 'top': '220px'}">
+            <img src="img/milestone.png"/>
+            <div style="margin-left:-46px" data-bind="text: milestone.text">&nbsp;</div>
+        </div>
+        <!-- /ko -->
+        <!-- ko foreach: {data: myItems, as: 'item'} -->
+        <div class="record" data-bind="style:{'left': item.x + 'px' , 'top': item.y + 'px', 'height': $root.itemHeight + 'px'}">
+            <!-- ko if: item.type=='in' -->
+            <div data-bind="style:{'height':($root.itemHeight - (item.data.length + 2) * $root.rowHeight)+'px'}"></div>
+            <div>
+                <p><span data-bind="text: item.name">&nbsp;</span><a style='float:right;' data-bind="attr: {'href': item.id}">更多信息</a></p>
+                <p data-bind="text: item.desc"></p>
+                <ul data-bind="foreach: { data: item.data, as: 'doc'}">
+                    <li>
+                        <a data-bind="attr: {'href': doc.url}, text: doc.name"></a>
+                    </li>
+                </ul>
+            </div>
+            <img data-bind="attr:{'src':'img/arrow_green.png'},event:{click:function(data, event) {$root.highlight(event)}}" />
+            <!-- /ko -->
+            <!-- ko if: item.type=='out' -->
+            <div>
+                <p><span data-bind="text: item.name">&nbsp;</span><a style='float:right;' data-bind="attr: {'href': item.id}">更多信息</a></p>
+                <p data-bind="text: item.desc"></p>
+                <ul data-bind="foreach: { data: item.data, as: 'doc'}">
+                    <li>
+                        <a data-bind="attr: {'href': doc.url}, text: doc.name"></a>
+                    </li>
+                </ul>
+            </div>
+            <img data-bind="attr:{'src':'img/arrow_red.png'},event:{click:function(data, event) {$root.highlight(event)}}" />
+            <!-- /ko -->
+        </div>
         <!-- /ko -->
     </div>
 </body>

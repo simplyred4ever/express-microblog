@@ -7,10 +7,10 @@ const {
 } = require('markdown');
 const moment = require("moment");
 const React = require('react');
-const PostList = require('../public/reactjs/post.js');
+const PostList = require('../../public/reactjs/post.js');
 
 module.exports = function(app) {
-    let routes = ['./reg', './login', './logout', './post', './user', './file'];
+    const routes = ['./reg', './login', './logout', './post', './user', './file'];
 
     for (let i of routes) {
         require(i)(app);

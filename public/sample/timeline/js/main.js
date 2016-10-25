@@ -1,10 +1,13 @@
 var vm;
 
 $(document).ready(function() {
+    var dd = 86400000;
+
     vm = {
         width: 745,
         itemHeight: 160,
-        rowHeight: 14,
+        rowHeight: 18,
+        title: ko.observable('HAM的项目\\用户需求\\需求规约 数据包交互时间轴'),
         timeStep: ko.observable('3M'),
         startTime: ko.observable(),
         endTime: ko.observable(),
@@ -22,9 +25,9 @@ $(document).ready(function() {
             for (var i = 0; i < data.length; i++) {
                 data[i].x = (moment(data[i].time).valueOf() - vm.startTime().valueOf()) / vm.totalTimeValue() * vm.width + 44;
                 if (data[i].type == 'in') {
-                    data[i].y = 290;
+                    data[i].y = 370;
                 } else {
-                    data[i].y = 50;
+                    data[i].y = 130;
                 }
             }
 
@@ -41,20 +44,17 @@ $(document).ready(function() {
                 });
                 tempX = 0;
                 for (var i = 0; i < typeData.length; i++) {
-                    if (moment(data[i].time).isBetween(vm.startTime(), vm.endTime())) {
-                        if (typeData[i].x - tempX < 10) {
-                            typeData[i].x = tempX + 10;
-                        }
-                        tempX = typeData[i].x;
-                        vm.myItems.push(typeData[i]);
+                    if (typeData[i].x - tempX < 10) {
+                        typeData[i].x = tempX + 10;
                     }
+                    tempX = typeData[i].x;
+                    vm.myItems.push(typeData[i]);
                 }
             }
         },
         myScales: ko.observableArray([]),
         setMyScales: function() {
             var days;
-            var dd = 86400000;
             var n;
             var m;
             this.myScales.removeAll();
@@ -172,7 +172,6 @@ $(document).ready(function() {
         myBigScales: ko.observableArray([]),
         setMyBigScales: function() {
             var days;
-            var dd = 86400000;
             var n;
             var m;
 
@@ -228,7 +227,7 @@ $(document).ready(function() {
                 return [];
             }
             for (var i = 0; i < milestone.length; i++) {
-                if (moment(milestone[i].time).isBetween(vm.startTime(), vm.endTime())) {
+                if (moment(milestone[i].time).isBetween(vm.startTime(), vm.endTime().clone().add(1, 'days'))) {
                     vm.myMilestones.push({
                         text: milestone[i].text + milestone[i].time,
                         value: (moment(milestone[i].time).valueOf() - vm.startTime().valueOf()) / vm.totalTimeValue() * vm.width - 12
@@ -238,20 +237,8 @@ $(document).ready(function() {
         },
         changeTimeStep: function() {
             if (this.timeStep().match(/1M|3M|1Y/)) {
-                $('#timeFrom').datebox('setValue', '');
-                $('#timeTo').datebox('setValue', '');
                 $('#timeFrom').datebox({'disabled': true});
                 $('#timeTo').datebox({'disabled': true});
-            } else {
-                $('#timeFrom').datebox({'disabled': false});
-                $('#timeTo').datebox({'disabled': false});
-            }
-            return true;
-        },
-        search: function() {
-            var start;
-            var end;
-            if (this.timeStep() == '1M' || this.timeStep() == '3M' || this.timeStep() == '1Y') {
                 end = moment();
                 if (this.timeStep() == '1M') {
                     start = moment().subtract(1, 'months');
@@ -262,18 +249,45 @@ $(document).ready(function() {
                 }
                 this.endTime(end);
                 this.startTime(start);
-                this.totalTimeValue(end.valueOf() - start.valueOf());
-            } else if (this.timeStep() == 'DIY') {
-                end = moment($('#timeTo').datebox('getValue'));
-                start = moment($('#timeFrom').datebox('getValue'));
-                if (end == start) {
-                    start = moment().subtract(1, 'days');
+                $('#timeFrom').datebox('setValue', this.startTime().format('YYYY-MM-DD'));
+                $('#timeTo').datebox('setValue', this.endTime().format('YYYY-MM-DD'));
+                this.totalTimeValue(end.valueOf() - start.valueOf() + dd);
+            } else {
+                $('#timeFrom').datebox({'disabled': false});
+                $('#timeTo').datebox({'disabled': false});
+                this.endTime('');
+                this.startTime('');
+            }
+            return true;
+        },
+        search: function() {
+
+            if (this.timeStep() == 'DIY') {
+                var start = moment($('#timeFrom').datebox('getValue'));
+                var end = moment($('#timeTo').datebox('getValue'));
+                if (!$('#timeFrom').datebox('getValue')) {
+                    alert('开始日期不能为空！');
+                    return;
+                }
+                if (!start.isValid()) {
+                    alert('开始日期不合法！');
+                    return;
+                }
+                if (!$('#timeTo').datebox('getValue')) {
+                    alert('结束日期不能为空！');
+                    return;
+                }
+                if (!end.isValid()) {
+                    alert('结束日期不合法！');
+                    return;
+                }
+                if (end.isBefore(start)) {
+                    alert('结束日期不能早于开始日期！');
+                    return;
                 }
                 this.endTime(end);
                 this.startTime(start);
-                this.totalTimeValue(end.clone().add(1, 'days').valueOf() - start.valueOf());
-            } else {
-                return;
+                this.totalTimeValue(end.valueOf() - start.valueOf() + dd);
             }
             this.setMyScales();
             this.setMyBigScales();
@@ -287,12 +301,19 @@ $(document).ready(function() {
         },
         unhighlight: function(evt) {
             $('.record').removeClass('highlight');
+        },
+        openMore: function(id) {
+            alert('更多信息 '+ id);
+        },
+        openDoc: function(url) {
+            alert('明细数据 '+ url);
         }
     };
 
     ko.applyBindings(vm, document.getElementById('timeline'));
 
-    $('[name=search]').click();
+    vm.changeTimeStep();
+    vm.search();
 
 });
 

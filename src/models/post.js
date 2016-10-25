@@ -1,7 +1,7 @@
 const mongodb = require('./db');
 const co = require("co");
 const util = require('util');
-const settings = require('../settings');
+const settings = require('../../settings');
 const {
     ObjectID
 } = require('mongodb');
@@ -16,18 +16,18 @@ class Post {
 
     static get(username, callback) {
         co(function*() {
-            let db = yield mongodb.connect(settings.URL);
-            let collection = yield db.collection('posts');
-            let query = {};
+            const db = yield mongodb.connect(settings.URL);
+            const collection = yield db.collection('posts');
+            const query = {};
             if (username) {
                 query.user = username;
             }
-            let docs = yield collection.find(query).sort({
+            const docs = yield collection.find(query).sort({
                 time: -1
             }).toArray();
 
             // 封装 posts 为 Post 对象
-            let posts = [];
+            const posts = [];
             docs.forEach((doc, index) => {
                 posts.push(new Post(doc.user, doc.post, doc.time, doc._id));
             });
@@ -41,15 +41,15 @@ class Post {
     }
 
     save(callback) {
-        let post = {
+        const post = {
             user: this.user,
             post: this.post,
             time: this.time,
         };
 
         co(function*() {
-            var db = yield mongodb.connect(settings.URL);
-            var collection = yield db.collection('posts');
+            const db = yield mongodb.connect(settings.URL);
+            const collection = yield db.collection('posts');
             collection.ensureIndex('user');
             yield collection.insert(post, {
                 safe: true
@@ -65,8 +65,8 @@ class Post {
 
     static remove(_id, callback) {
         co(function*() {
-            var db = yield mongodb.connect(settings.URL);
-            var collection = yield db.collection('posts');
+            const db = yield mongodb.connect(settings.URL);
+            const collection = yield db.collection('posts');
             yield collection.findAndRemove({
                 _id: new ObjectID(_id)
             });

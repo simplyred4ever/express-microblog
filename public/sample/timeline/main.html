@@ -21,9 +21,22 @@
             background-color: white;
         }
 
+        h1 {
+            margin: auto;
+            width: 100%;
+            font-family: 微软雅黑;
+            font-weight: bolder;
+            font-size: 16px;
+        }
+
         .scale {
             position: absolute;
             padding-left: 60px;
+            z-index:9001;
+        }
+
+        .scale * {
+            font-size: 11px;
         }
 
         .milestone {
@@ -34,7 +47,8 @@
             position: absolute;
             background-color: white;
             border: solid black 0px;
-            padding: 2px
+            padding: 2px;
+            width: 200px;
         }
 
         .record.highlight {
@@ -52,9 +66,18 @@
             clear: both;
         }
 
-        .record span {
+        .record.span, .record-name {
             display: block;
             float: left;
+            word-break: keep-all;
+            /* 不换行 */
+            white-space: nowrap;
+            /* 不换行 */
+            overflow: hidden;
+            /* 内容超出宽度时隐藏超出部分的内容 */
+            text-overflow: ellipsis;
+            /* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+            font-size: 12px;
         }
 
         .record a {
@@ -66,6 +89,7 @@
             /* 内容超出宽度时隐藏超出部分的内容 */
             text-overflow: ellipsis;
             /* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+            font-size: 12px;
         }
 
         .more {
@@ -75,6 +99,8 @@
         }
 
         .record li {
+            padding: 0;
+            border: 0;
             list-style-type: none;
         }
 
@@ -83,6 +109,10 @@
             left: 0;
             top: 0;
             cursor: pointer;
+        }
+
+        a {
+            color: default;
         }
     </style>
     <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
@@ -96,36 +126,35 @@
 <body>
     <div id="timeline">
 
-        <fieldset>
-            <div>
-                <label>时段：</label>
-                <span><input type="radio" name="timeStep" value="1M" data-bind="checked: timeStep,click: changeTimeStep"></input>1个月内</span>
-                <span><input type="radio" name="timeStep" value="3M" data-bind="checked: timeStep,click: changeTimeStep"></input>3个月内</span>
-                <span><input type="radio" name="timeStep" value="1Y" data-bind="checked: timeStep,click: changeTimeStep"></input>1年内</span>
-                <span><input type="radio" name="timeStep" value="DIY" data-bind="checked: timeStep,click: changeTimeStep"></input>自定义</span>
-                <span>从</span><input id="timeFrom" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser,disabled:true"></input>
-                <span>到</span><input id="timeTo" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser,disabled:true"></input>
-            </div>
-            <div>
-                <span>操作者：<input name="operator" type="text" data-bind="value: operator"></input></span>
-                <span>数据包名称：<input name="packageName" type="text" data-bind="value: packageName"></input></span>
-                <span>数据包编号：<input name="packageCode" type="text" data-bind="value: packageCode"></input></span>
-                <button name="search" data-bind="click: search">查询</button>
-            </div>
-        </fieldset>
-        <img style="position:absolute;left:10px;top:200px;" src="img/arrow_yellow.png" data-bind="click:unhighlight" />
+        <div style="background-color:#F2F2F2;width:100%;padding:5px;">
+            <span style="margin-left: 100px;">时段：</span>
+            <span><input type="radio" name="timeStep" value="1M" data-bind="checked: timeStep,click: changeTimeStep"></input>1个月内</span>
+            <span><input type="radio" name="timeStep" value="3M" data-bind="checked: timeStep,click: changeTimeStep"></input>3个月内</span>
+            <span><input type="radio" name="timeStep" value="1Y" data-bind="checked: timeStep,click: changeTimeStep"></input>1年内</span>
+            <span><input type="radio" name="timeStep" value="DIY" data-bind="checked: timeStep,click: changeTimeStep"></input>自定义</span>
+            <span>从</span><input id="timeFrom" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser,disabled:true"></input>
+            <span>到</span><input id="timeTo" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser,disabled:true"></input>
+            <br />
+            <span style="margin-left: 87px;">操作者：<input name="operator" type="text" data-bind="value: operator"></input></span>
+            <span>数据包名称：<input name="packageName" type="text" data-bind="value: packageName"></input></span>
+            <span>数据包编号：<input name="packageCode" type="text" data-bind="value: packageCode"></input></span>
+            <a href="#" class="easyui-linkbutton" name="search" data-bind="click: search">查询</a>
+        </div>
+        <div style="width:1000px;height:20px;padding:20px;"><h1 style="text-align:center;vertical-align:middle;" data-bind="text:title"></h1>
+        </div>
+        <img style="position:absolute;left:10px;top:280px;z-index:9000;" src="img/arrow_yellow.png" data-bind="click:unhighlight" />
         <!-- ko foreach: {data: myBigScales, as: 'scale'} -->
-        <span class="scale" data-bind="style:{'left': scale.value + 'px', 'top': '253px'}">
+        <span class="scale" data-bind="style:{'left': scale.value + 'px', 'top': '333px'}">
             <span style="margin-left:-3px;vertical-align: top;"data-bind="text: scale.text">&nbsp;</span>
         </span>
         <!-- /ko -->
         <!-- ko foreach: {data: myScales, as: 'scale'} -->
-        <span class="scale" data-bind="style:{'left': scale.value + 'px', 'top': '264px'}">
+        <span class="scale" data-bind="style:{'left': scale.value + 'px', 'top': '344px'}">
             <img style="margin-left:-8px;margin-top:-2px" src="img/scale.png"/><span style="margin-left:2px;vertical-align: top;"data-bind="text: scale.text">&nbsp;</span>
         </span>
         <!-- /ko -->
         <!-- ko foreach: {data: myMilestones, as: 'milestone'} -->
-        <div class="milestone scale" data-bind="style:{'left': milestone.value + 'px', 'top': '220px'}">
+        <div class="milestone scale" data-bind="style:{'left': milestone.value + 'px', 'top': '300px'}">
             <img src="img/milestone.png"/>
             <div style="margin-left:-46px" data-bind="text: milestone.text">&nbsp;</div>
         </div>
@@ -135,11 +164,11 @@
             <!-- ko if: item.type=='in' -->
             <div data-bind="style:{'height':($root.itemHeight - (item.data.length + 2) * $root.rowHeight)+'px'}"></div>
             <div>
-                <p><span data-bind="text: item.name">&nbsp;</span><a style='float:right;' data-bind="attr: {'href': item.id}">更多信息</a></p>
+                <p><span class="record-name" style="width:120px" data-bind="text: item.name, attr: {'title': item.name}">&nbsp;</span><a style='float:right;' href="#" data-bind="click: function(data, event){$root.openMore(item.id)}">更多信息</a></p>
                 <p data-bind="text: item.desc"></p>
                 <ul data-bind="foreach: { data: item.data, as: 'doc'}">
                     <li>
-                        <a data-bind="attr: {'href': doc.url}, text: doc.name"></a>
+                        <a href="#" data-bind="text: doc.name.substring(0, 15),click: function(data, event){$root.openDoc(doc.url)}"></a>
                     </li>
                 </ul>
             </div>
@@ -147,11 +176,11 @@
             <!-- /ko -->
             <!-- ko if: item.type=='out' -->
             <div>
-                <p><span data-bind="text: item.name">&nbsp;</span><a style='float:right;' data-bind="attr: {'href': item.id}">更多信息</a></p>
+                <p><span class="record-name" style="width:120px" data-bind="text: item.name, attr: {'title': item.name}">&nbsp;</span><a style='float:right;' href="#" data-bind="click: function(data, event){$root.openMore(item.id)}">更多信息</a></p>
                 <p data-bind="text: item.desc"></p>
                 <ul data-bind="foreach: { data: item.data, as: 'doc'}">
                     <li>
-                        <a data-bind="attr: {'href': doc.url}, text: doc.name"></a>
+                        <a href="#" data-bind="text: doc.name.substring(0, 15),click: function(data, event){$root.openDoc(doc.url)}"></a>
                     </li>
                 </ul>
             </div>

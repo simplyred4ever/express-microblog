@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style>
+        .view {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
+    </style>
+    <script type="text/javascript">
+        htconfig = {
+            Style: {
+                'edge.color': "black",
+                'flow': true,
+                'edge.offset': 0,
+                'flow.element.background': "rgb(41, 249, 47)",
+                'flow.element.count': 1,
+                'flow.count': 2,
+                'flow.element.max': 10,
+                'flow.element.shadow.visible': false
+            }
+        };
+    </script>
+    <script type="text/javascript" src="example_demo3_files/ht.js"></script>
+    <script type="text/javascript" src="example_demo3_files/GridPainter.js"></script>
+    <script type="text/javascript" src="example_demo3_files/ht-flow.js"></script>
+    <script type="text/javascript" src="example_demo3_files/ht-edgetype.js"></script>
+    <script type="text/javascript" src="example_demo3_files/ht-autolayout.js"></script>
+    <script type="text/javascript">
+
+        ht.Default.setImage("server", 'example_demo3_files/img/server.png');
+
+        ht.Default.setImage("pc", 'example_demo3_files/img/pc.png');
+
+        ht.Default.setImage("router", 'example_demo3_files/img/router.png');
+
+        ht.Default.setImage("switch", 'example_demo3_files/img/switch.png');
+
+        function init() {
+            var graph = window.graph = new ht.graph.GraphView(),
+                dm = window.dm = graph.dm(),
+                view = graph.getView();
+
+            document.body.appendChild(view);
+            view.className = "view";
+
+            var lastRouter = null,
+                firstRouter = null;
+            for (var i = 0; i < 5; i++) {
+                var router = new ht.Node();
+                router.setImage("router");
+                dm.add(router);
+                if (lastRouter) {
+                    var edge = new ht.Edge(router, lastRouter);
+                    dm.add(edge);
+                }
+                lastRouter = router;
+
+                if (!firstRouter) {
+                    firstRouter = router;
+                }
+                createSwitch(router);
+            }
+            var edge = new ht.Edge(lastRouter, firstRouter);
+            dm.add(edge);
+
+            graph.enableFlow();
+
+            window.addEventListener("resize", function() {
+                graph.iv();
+            });
+
+            graph.addBottomPainter(new ht.graph.GridPainter(graph));
+
+            var autoLayout = new ht.layout.AutoLayout(graph);
+            autoLayout.setRepulsion(2);
+            autoLayout.layout("circular", function() {
+                graph.fitContent();
+            });
+        }
+
+        function createSwitch(router) {
+            var switcher = new ht.Node();
+            switcher.setImage("switch");
+            var edge = new ht.Edge(router, switcher);
+            dm.add(switcher);
+            dm.add(edge);
+            edge.s({
+                'edge.type': 'ripple',
+                'edge.ripple.size': 8,
+                'edge.ripple.straight': true,
+                'edge.color': 'red'
+            });
+
+
+            var pc1 = new ht.Node(),
+                pc2 = new ht.Node(),
+                server = new ht.Node(),
+                edge1 = new ht.Edge(pc1, switcher),
+                edge2 = new ht.Edge(pc2, switcher),
+                edge3 = new ht.Edge(server, switcher);
+            pc1.setImage("pc");
+            pc2.setImage("pc");
+            server.setImage("server");
+
+            dm.add(pc1);
+            dm.add(pc2);
+            dm.add(server);
+
+            dm.add(edge1);
+            dm.add(edge2);
+            dm.add(edge3);
+        }
+    </script>
+</head>
+
+<body onload="init();">
+
+</body>
+
+</html>

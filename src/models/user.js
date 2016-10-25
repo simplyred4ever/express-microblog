@@ -1,6 +1,6 @@
 const mongodb = require('./db');
 const co = require("co");
-const settings = require('../settings');
+const settings = require('../../settings');
 
 class User {
     constructor(user) {
@@ -10,14 +10,15 @@ class User {
 
     static get(username, callback) {
         co(function*() {
-            var db = yield mongodb.connect(settings.URL);
-            var collection = yield db.collection('users');
-            var doc = yield collection.findOne({
+            const db = yield mongodb.connect(settings.URL);
+            const collection = yield db.collection('users');
+            const doc = yield collection.findOne({
                 name: username
             });
+            let user;
             if (doc) {
                 // 封装文档为 User 对象
-                var user = new User(doc);
+                user = new User(doc);
             }
             callback(null, user);
             yield db.close();
@@ -29,13 +30,13 @@ class User {
 
     save(callback) {
         // 存入 Mongodb 的文档
-        var user = {
+        const user = {
             name: this.name,
             password: this.password,
         };
         co(function*() {
-            var db = yield mongodb.connect(settings.URL);
-            var collection = yield db.collection('users');
+            const db = yield mongodb.connect(settings.URL);
+            const collection = yield db.collection('users');
             collection.ensureIndex('name', {
                 unique: true
             });

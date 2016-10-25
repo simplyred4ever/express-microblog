@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Force3dLayout</title>
+    <meta charset="UTF-8">
+    <style>
+        html,
+        body {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        .main {
+            margin: 0px;
+            padding: 0px;
+            position: absolute;
+            top: 0px;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+        }
+    </style>
+
+    <script src="Force3dLayout_files/ht.js"></script>
+    <script src="Force3dLayout_files/ht-forcelayout.js"></script>
+    <script>
+        function init() {
+            items = [{
+                label: 'Force Layout',
+                selected: true,
+                type: 'toggle',
+                action: function() {
+                    if (this.selected) {
+                        forceLayout.start();
+                    } else {
+                        forceLayout.stop();
+                    }
+                }
+            }, {
+                label: 'Editable',
+                type: 'check',
+                selected: false,
+                action: function(item) {
+                    g3d.setEditable(item.selected);
+                }
+            }];
+
+            dataModel = new ht.DataModel();
+            g3d = new ht.graph3d.Graph3dView(dataModel);
+            toolbar = new ht.widget.Toolbar(items);
+            borderPane = new ht.widget.BorderPane();
+            borderPane.setTopView(toolbar);
+            borderPane.setCenterView(g3d);
+
+            view = borderPane.getView();
+            view.className = 'main';
+            document.body.appendChild(view);
+            window.addEventListener('resize', function(e) {
+                borderPane.invalidate();
+            }, false);
+
+            initDataModel();
+
+            g3d.setGridSize(100);
+            g3d.setGridGap(100);
+            g3d.setGridVisible(true);
+            g3d.setEye([0, 300, 700]);
+            g3d.getMoveMode = function(e) {
+                return 'xyz';
+            }
+            forceLayout = new ht.layout.Force3dLayout(g3d);
+            forceLayout.start();
+        }
+
+        function createNode(name) {
+            var node = new ht.Node();
+            node.s({
+                'shape3d': 'sphere',
+                'note': name,
+                'note.position': 17,
+                'note.background': 'yellow',
+                'note.color': 'black',
+                'note.autorotate': true,
+                'note.face': 'top'
+            });
+            node.s3(40, 40, 40);
+            dataModel.add(node);
+            return node;
+        }
+
+        function createEdge(sourceNode, targetNode) {
+            var edge = new ht.Edge(sourceNode, targetNode);
+            edge.s({
+                'edge.width': 10,
+                'shape3d.color': '#E74C3C',
+                'shape3d': 'cylinder'
+            });
+            dataModel.add(edge);
+            return edge;
+        }
+
+        function initDataModel() {
+            var ip = "192.168.1.";
+            var count = 0;
+            var root = createNode(ip + count++);
+
+            for (var i = 0; i < 3; i++) {
+                var iNode = createNode(ip + count++);
+                createEdge(root, iNode);
+
+                for (var j = 0; j < 3; j++) {
+                    var jNode = createNode(ip + count++);
+                    createEdge(iNode, jNode);
+                }
+            }
+        }
+    </script>
+</head>
+
+<body onload="init();">
+
+
+    <div tabindex="-1" style="cursor: default; border: 0px none; outline: 0px none; padding: 0px; position: absolute; margin: 0px; box-sizing: border-box; overflow: hidden;" class="main">
+        <div tabindex="-1" style="cursor: default; border: 0px none; outline: 0px none; padding: 0px; position: absolute; margin: 0px; box-sizing: border-box; overflow: hidden; background: rgb(236, 240, 241) none repeat scroll 0% 0%; height: 24px; left: 0px; top: 0px; width: 1440px;"><canvas style="pointer-events: none; border: 0px none; outline: 0px none; padding: 0px; position: absolute; margin: 0px; box-sizing: border-box; width: 1440px; height: 24px;" width="1440" height="24"></canvas></div>
+        <div tabindex="-1" style="cursor: default; border: 0px none; outline: 0px none; padding: 0px; position: absolute; margin: 0px; box-sizing: border-box; overflow: hidden; left: 0px; top: 24px; width: 1440px; height: 765px;"><canvas style="pointer-events: none; border: 0px none; outline: 0px none; padding: 0px; position: absolute; margin: 0px; box-sizing: border-box; width: 1440px; height: 765px;" width="1440" height="765"></canvas></div>
+    </div>
+</body>
+
+</html>

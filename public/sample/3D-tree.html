@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="3D-tree_files/ht.js"></script>
+    <script src="3D-tree_files/Tree3DLayout.js"></script>
+    <script src="3D-tree_files/randomColor.js"></script>
+    <script src="3D-tree_files/CreateTree.js"></script>
+    <script>
+        function init() {
+            var dataModel = new ht.DataModel(),
+                tree = new ht.widget.TreeView(dataModel),
+                graphView = new ht.graph3d.Graph3dView(dataModel),
+                splitView = new ht.widget.SplitView(tree, graphView, 'h', 180);
+
+            // 在树组件上过滤掉连线对象
+            tree.setVisibleFunc(function(node) {
+                return !(node instanceof ht.Edge);
+            });
+
+            splitView.addToDOM();
+
+            var level = 4,
+                size = (level + 1) * 20;
+
+            var root = createNode(dataModel);
+            root.setName('root');
+            root.p3(0, 300, 0);
+
+            root.s('shape3d', 'sphere');
+            root.s('shape3d.color', randomColor());
+            root.s3(size, size, size);
+
+            var colors = {},
+                sizes = {};
+            createTreeNodes(dataModel, root, level - 1, 5, function(data, level, num) {
+                if (!colors[level]) {
+                    colors[level] = randomColor();
+                    sizes[level] = (level + 1) * 20;
+                }
+
+                size = sizes[level];
+
+                data.setName('item-' + level + '-' + num);
+                // 设置节点形状为球形
+                data.s('shape3d', 'sphere');
+                data.s('shape3d.color', colors[level]);
+                data.s3(size, size, size);
+            });
+
+            tree.expandAll();
+
+            ht.Default.Tree3DLayout.countRadius(root, 40);
+
+            ht.Default.Tree3DLayout.layout(root, 120);
+        }
+    </script>
+</head>
+
+<body onload="init()">
+    <div style="display: none;">
+        <script src="3D-tree_files/z_stat.php" language="JavaScript"></script>
+        <script src="3D-tree_files/core.php" charset="utf-8" type="text/javascript"></script><a href="http://www.cnzz.com/stat/website.php?web_id=1000279011" target="_blank" title="站长统计">站长统计</a></div>
+
+    <div tabindex="-1" style="cursor: default; border: 0px none; outline: 0px none; padding: 0px; position: absolute; margin: 0px; box-sizing: border-box; overflow: hidden; left: 0px; right: 0px; top: 0px; bottom: 0px;">
+        <div tabindex="-1" style="cursor: default; border: 0px none; outline: 0px none; padding: 0px; position: absolute; margin: 0px; box-sizing: border-box; overflow: hidden; left: 0px; top: 0px; width: 180px; height: 789px;"><canvas style="pointer-events: none; border: 0px none; outline: 0px none; padding: 0px; position: absolute; margin: 0px; box-sizing: border-box; width: 180px; height: 789px;" width="180" height="789"></canvas>
+            <div tabindex="-1" style="cursor: default; border: 0px none; outline: 0px none; padding: 0px; position: absolute; margin: 0px; box-sizing: border-box;">
+                <div tabindex="-1" style="cursor: default; border: 0px none; outline: 0px none; padding: 0px; position: absolute; margin: 0px; box-sizing: border-box; visibility: hidden; background: rgba(0, 0, 0, 0.35) none repeat scroll 0% 0%; border-radius: 3.5px; left: 171px; top: 0px; width: 7px; height: 199.526px;"></div>
+            </div>
+        </div>
+        <div tabindex="-1" style="cursor: default; border: 0px none; outline: 0px none; padding: 0px; position: absolute; margin: 0px; box-sizing: border-box; overflow: hidden; left: 181px; top: 0px; width: 1259px; height: 789px;"><canvas style="pointer-events: none; border: 0px none; outline: 0px none; padding: 0px; position: absolute; margin: 0px; box-sizing: border-box; width: 1259px; height: 789px;" width="1259" height="789"></canvas></div>
+        <div tabindex="-1" style="cursor: ew-resize; border: 0px none; outline: 0px none; padding: 0px; position: absolute; margin: 0px; box-sizing: border-box; left: 180px; top: 0px; width: 1px; height: 789px; background: rgb(44, 62, 80) none repeat scroll 0% 0%;">
+            <div tabindex="-1" style="cursor: ew-resize; border: 0px none; outline: 0px none; padding: 0px; position: absolute; margin: 0px; box-sizing: border-box; left: -3.5px; top: 0px; width: 8px; height: 789px;"></div><canvas style="pointer-events: auto; border: 0px none; outline: 0px none; padding: 0px; position: absolute; margin: 0px; box-sizing: border-box; cursor: pointer; width: 1px; height: 1px; left: 0px; top: 389.5px;" width="1" height="1"></canvas>
+            <canvas
+                style="pointer-events: auto; border: 0px none; outline: 0px none; padding: 0px; position: absolute; margin: 0px; box-sizing: border-box; cursor: pointer; width: 1px; height: 1px; left: 0px; top: 398.5px;" width="1" height="1"></canvas>
+        </div>
+    </div>
+</body>
+
+</html>

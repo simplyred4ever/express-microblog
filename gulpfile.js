@@ -3,12 +3,35 @@ const react = require('gulp-react');
 const runSequence = require('run-sequence');
 const browserSync = require('browser-sync').create();
 const nodemon = require('gulp-nodemon');
+const sourcemaps = require('gulp-sourcemaps');
+const babel = require('gulp-babel');
+
+gulp.task('babel', () => {
+    gulp.src(['src/**/*.js'])
+        /*.pipe(babel({
+            presets: ['es2015']
+        }))*/
+        .pipe(gulp.dest('dist'));
+
+    gulp.src(['src/**/*.ejs'])
+        .pipe(gulp.dest('dist'));
+});
+
+gulp.task('ejs', () => {
+    gulp.src(['src/**/*.ejs'])
+        .pipe(gulp.dest('dist'));
+});
 
 gulp.task('react', () => {
     gulp.src('public/reactjsx/*.jsx')
         .pipe(react())
+        /*.pipe(babel({
+            presets: ['es2015']
+        }))*/
         .pipe(gulp.dest('public/reactjs/'));
 });
+
+gulp.watch(['src/**/*.js', 'src/**/*.ejs'], ['babel', 'ejs']);
 
 gulp.watch('public/reactjsx/*.jsx', ['react']);
 
@@ -30,7 +53,7 @@ gulp.task('browser-sync', ['nodemon'], () => {
     gulp.watch(["public/**/*.*"]).on("change", browserSync.reload);
 });
 
-gulp.task('nodemon', ['react'], (cb) => {
+gulp.task('nodemon', ['react', 'babel'], (cb) => {
 
     var started = false;
 

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mono Test</title>
+    <script type="text/javascript" src = "t.js"></script>
+    <script type="text/javascript">
+        var BALL_SEGMENT=7;
+        function init(){
+            var box = new mono.DataBox();
+            var network= new mono.Network3D(box, null, monoCanvas);
+            mono.Utils.autoAdjustNetworkBounds(network,document.documentElement,'clientWidth','clientHeight');
+            network.getCamera().setPosition(0, 0, 4000);
+            network.isSelectable=function(){return false};
+            network.setClearColor('black');
+            var pointLight = new mono.PointLight(0xFFFFFF,0.8);
+            box.add(pointLight);
+            var pointLight = new mono.PointLight(0xFFFFFF,0.5);
+            pointLight.setPosition(500,2000,0);
+            box.add(pointLight);
+            box.add(new mono.AmbientLight(0x888888));
+            var center=createNode('red');
+            box.add(center);
+            for(var i=0;i<10;i++){
+                var angle1=Math.random()*Math.PI;
+                var angle2=Math.random()*Math.PI*2;
+                var point=getSpherePoint(300, angle1, angle2);
+                var tree=createTree(box, 100, Math.PI*0.6, 700, '#'+('00000'+(Math.random()*0x1000000<<0).toString(16)).slice(-6));
+                tree.setPosition(point.x, point.y, point.z);
+                var rotation=point.rotationTowards(new mono.Vec3(0,1,0), point);
+                tree.setRotation(rotation);
+                box.add(createLink(center, tree));
+            }
+            for(var i=0;i<40;i++){
+                var angle1=Math.random()*Math.PI;
+                var angle2=Math.random()*Math.PI*2;
+                var point=getSpherePoint(1000, angle1, angle2);
+                var tree=createTree(box, 100, Math.PI*0.4, 800);
+                tree.setPosition(point.x, point.y, point.z);
+                var rotation=point.rotationTowards(new mono.Vec3(0,1,0), point);
+                tree.setRotation(rotation);
+                box.add(createLink(center, tree));
+            }
+        }
+        function createTree(box, count, range, offset, color){
+            var angleStep=Math.PI/50;
+            var center=new mono.Sphere(10,BALL_SEGMENT,BALL_SEGMENT);
+            center.s({
+                'm.type': 'phong',
+                'm.color': color,
+                'm.ambient': color,
+            });
+            box.add(center);
+            for(var i=0;i<count;i++){
+                var node= createNode(color);
+                var r=1000;
+                var angle1=range*Math.random()/5;
+                var angle2=Math.PI*2*Math.random();
+                var point=getSpherePoint(r, angle1, angle2);
+                point.y-=offset;
+                node.setPosition(point);
+                node.setParent(center);
+                box.add(node);
+                box.add(createLink(center, node));
+            }
+            return center;
+        }
+        function getSpherePoint(r, angle1, angle2){
+            var x=r*Math.sin(angle1)*Math.cos(angle2);
+            var y=r*Math.cos(angle1);
+            var z=r*Math.sin(angle1)*Math.sin(angle2);
+            return new mono.Vec3(x, y, z);
+        }
+        function createNode(color){
+            var color = color || '#'+('00000'+(Math.random()*0x1000000<<0).toString(16)).slice(-6);
+            var node=new mono.Sphere(10,BALL_SEGMENT,BALL_SEGMENT);
+            node.s({
+                'm.type': 'phong',
+                'm.color': color,
+                'm.ambient': color,
+            });
+            return node;
+        }
+        function createLink(node1, node2){
+            var link=new mono.Link(node1, node2);
+            link.s({
+                'm.transparent': true,
+                'm.opacity': 0.2,
+            });
+            return link;
+        }    
+    </script>
+</head>
+<body onload = 'init()'>
+    <div>
+        <canvas id="monoCanvas"/>
+    </div>
+</body>
+</html>

@@ -15,8 +15,8 @@ module.exports = function(app) {
         });
     }).post((req, res) => {
         //生成口令的散列值
-        let md5 = crypto.createHash('md5');
-        let password = md5.update(req.body.password).digest('base64');
+        const md5 = crypto.createHash('md5');
+        const password = md5.update(req.body.password).digest('base64');
 
         User.get(req.body.username, (err, user) => {
             if (!user) {

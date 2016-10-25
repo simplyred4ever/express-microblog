@@ -6,8 +6,8 @@ const routesUtil = require('./routesUtil.js');
 
 module.exports = function(app) {
     app.route('/post').all(routesUtil.checkLogin).post((req, res) => {
-        let currentUser = req.session.user;
-        let post = new Post(currentUser.name, req.body.post);
+        const currentUser = req.session.user;
+        const post = new Post(currentUser.name, req.body.post);
 
         post.save(err => {
             if (err) {

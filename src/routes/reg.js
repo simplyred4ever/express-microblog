@@ -21,10 +21,10 @@ module.exports = function(app) {
         }
 
         //生成口令的散列值
-        var md5 = crypto.createHash('md5');
-        var password = md5.update(req.body.password).digest('base64');
+        const md5 = crypto.createHash('md5');
+        const password = md5.update(req.body.password).digest('base64');
 
-        var newUser = new User({
+        const newUser = new User({
             name: req.body.username,
             password: password
         });

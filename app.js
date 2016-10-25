@@ -3,7 +3,7 @@
  */
 const express = require('express'); // 引用express框架
 const partials = require('express-partials'); // Express3.0中引用layout.ejs时
-const routes = require('./routes'); // 路由控制，找routes.js或routes/index.js
+const routes = require('./dist/routes'); // 路由控制，找routes.js或routes/index.js
 const path = require('path'); // 路径模块
 const favicon = require('serve-favicon');
 const app = express(); // 使用框架
@@ -13,7 +13,7 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session); // 连mongo数据库*/
 const settings = require('./settings'); // 引用settings.js*/
 const flash = require('connect-flash'); // 使用页面闪存
-const mongodb = require('./models/db');
+const mongodb = require('./dist/models/db');
 const morgan = require('morgan'); //logger模块的这个新名字真是神奇
 const compression = require('compression'); //压缩中间件，deflate、gzip等格式
 const methodOverride = require('method-override'); //重载方法
@@ -23,7 +23,7 @@ const errorHandler = require('errorHandler');
 const bodyParser = require('body-parser');
 
 app.set('port', process.env.PORT || 3000);
-app.set('views', __dirname + '/views'); // 模板位置 MVC的V
+app.set('views', __dirname + '/dist/views'); // 模板位置 MVC的V
 app.set('view engine', 'ejs'); // 模板引擎
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(morgan('dev'));

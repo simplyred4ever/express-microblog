@@ -1,0 +1,285 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>数据包交互时间轴</title>
+<base href="http://192.168.207.179:8080/" />
+<script src="/ppm/static/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/ppm/static/js/easyui.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/ppm/static/js/easyui-lang-zh_CN.js" type="text/javascript" charset="utf-8"></script>
+<script src="/ppm/static/js/easyui.datagrid.js" type="text/javascript" charset="utf-8"></script>
+<script src="/ppm/static/js/easyui.tree.js" type="text/javascript" charset="utf-8"></script>
+<script src="/ppm/static/js/easyui.treegrid.js" type="text/javascript" charset="utf-8"></script>
+<script src="/ppm/static/js/easyui.groupview.js" type="text/javascript"></script>
+<script src="/ppm/static/js/datagrid-detailview.js" type="text/javascript"></script>
+<script src="/ppm/static/js/easyui.datebox.js" type="text/javascript" charset="utf-8"></script>
+<!-[if gt IE 8]>
+<link rel="stylesheet" href="/ppm/static/js/css/easyui11.css" type="text/css" charset="utf-8"/>
+<link rel="stylesheet" href="/ppm/static/js/css/easyui10.css" type="text/css" charset="utf-8"/>
+<link rel="stylesheet" href="/ppm/static/js/css/easyui6.css" type="text/css" charset="utf-8"/>
+<![endif]->
+<!-[if IE 8]>
+<link rel="stylesheet" href="/ppm/static/js/css/easyui.css" type="text/css" charset="utf-8"/>
+<link rel="stylesheet" href="/ppm/static/css/common.css" type="text/css" charset="utf-8"/>
+<link rel="stylesheet" href="/ppm/static/css/sys.css" type="text/css" charset="utf-8"/>
+<link rel="stylesheet" href="/ppm/static/css/com.css" type="text/css" charset="utf-8"/>
+<script src="/ppm/static/js/common.js" type="text/javascript" charset="utf-8"></script>
+<![endif]->
+<SCRIPT language="javascript">
+var out_path = "/ppm";
+var project_path = "/ppm";
+   var isIE6 = /MSIE 6\./.test(navigator.userAgent);
+var browser_name = 'Failed to identify the browser';
+   function validBrowser() {
+       var u_agent = navigator.userAgent;
+       if (u_agent.indexOf('Firefox') > -1) {
+           browser_name = 'Firefox';
+       } else if (u_agent.indexOf('Chrome') > -1) {
+           browser_name = 'Chrome';
+       } else if (u_agent.indexOf('Trident') > -1
+               && u_agent.indexOf('rv:11') > -1) {
+           browser_name = 'IE11';
+       } else if (u_agent.indexOf('MSIE') > -1
+               && u_agent.indexOf('Trident') > -1) {
+           browser_name = 'IE(8-10)';
+           if(u_agent.indexOf('MSIE 10')>-1){
+               browser_name = 'IE10';
+           }else if(u_agent.indexOf('MSIE 11')>-1){
+               browser_name = 'IE11';
+           }
+       } else if (u_agent.indexOf('MSIE') > -1) {
+           browser_name = 'IE(6-7)';
+       } else if (u_agent.indexOf('Opera') > -1) {
+           browser_name = 'Opera';
+       } else {
+           browser_name += ',info:' + u_agent;
+       }
+       //alert('browser_name:' + browser_name + '<br>' + 'u_agent:' + u_agent
+               //+ '<br>');
+   }
+   validBrowser();
+
+   jQuery(function($) {
+       var d = $("#toolbar").find("a");
+
+       //    $(d).each(function(){
+       //          var dId = $(this).attr("id");
+       //          if(permissions.indexOf('{'+dId+'}')<0){
+       //            $('#'+dId).remove();
+       //          }
+   })
+</script>
+<script language="javascript">
+   //动态加载一个js/css文件
+   function loadjscssfile(filename, filetype) {
+       if (filetype == "js") {
+           var fileref = document.createElement('script')
+           fileref.setAttribute("type", "text/javascript")
+           fileref.setAttribute("src", filename)
+       } else if (filetype == "css") {
+           var fileref = document.createElement("link")
+           fileref.setAttribute("rel", "stylesheet")
+           fileref.setAttribute("type", "text/css")
+           fileref.setAttribute("href", filename)
+       }
+       if (typeof fileref != "undefined"){
+           document.getElementsByTagName("head")[0].appendChild(fileref)
+       }
+   }
+   //移动已经加载过的js/css
+   function removejscssfile(filename, filetype) {
+       var targetelement = (filetype == "js") ? "script"
+               : (filetype == "css") ? "link" : "none"
+       var targetattr = (filetype == "js") ? "src"
+               : (filetype == "css") ? "href" : "none"
+       var allsuspects = document.getElementsByTagName(targetelement)
+       for (var i = allsuspects.length; i >= 0; i--) {
+           if (allsuspects[i]
+                   && allsuspects[i].getAttribute(targetattr) != null
+                   && allsuspects[i].getAttribute(targetattr)
+                           .indexOf(filename) != -1)
+               allsuspects[i].parentNode.removeChild(allsuspects[i])
+       }
+   }
+   if(browser_name=='IE(6-7)'){
+       removejscssfile("/ppm/static/js/css/easyui.css", "css");
+       removejscssfile("/ppm/static/js/css/easyui10.css", "css");
+       removejscssfile("/ppm/static/js/css/easyui11.css", "css");
+       loadjscssfile("/ppm/static/js/css/commonIE6.css", "css");
+       loadjscssfile("/ppm/static/js/css/sysIE6.css", "css");
+       loadjscssfile("/ppm/static/js/css/comIE6.css", "css");
+   }else if(browser_name=='IE10'){
+       removejscssfile("/ppm/static/js/css/easyui.css", "css");
+       removejscssfile("/ppm/static/js/css/easyui6.css", "css");
+       removejscssfile("/ppm/static/js/css/easyui11.css", "css");
+   }else if(browser_name=='IE11'){
+       removejscssfile("/ppm/static/js/css/easyui.css", "css");
+       removejscssfile("/ppm/static/js/css/easyui6.css", "css");
+       removejscssfile("/ppm/static/js/css/easyui10.css", "css");
+   }else{
+       if(browser_name!='IE(8-10)'){
+           removejscssfile("/ppm/static/js/css/easyui.css", "css");
+           removejscssfile("/ppm/static/js/css/easyui6.css", "css");
+           removejscssfile("/ppm/static/js/css/easyui10.css", "css");
+       }else{
+           removejscssfile("/ppm/static/js/css/easyui6.css", "css");
+           removejscssfile("/ppm/static/js/css/easyui10.css", "css");
+           removejscssfile("/ppm/static/js/css/easyui11.css", "css");
+       }
+   }
+</script>
+<style type="text/css">
+       * {
+           padding: 0;
+           margin: 0;
+           font-family: simsun;
+           font-size: 12px;
+       }
+
+       .timeline {
+           background-color: white;
+       }
+
+       .scale {
+           position: absolute;
+           padding-left: 60px;
+       }
+
+       .milestone {
+           width: 160px;
+       }
+
+       .record {
+           position: absolute;
+           background-color: white;
+           border: solid black 0px;
+           padding: 2px
+       }
+
+       .record.highlight {
+           position: absolute;
+           background-color: #ffffcc;
+           padding: 2px;
+           z-index: 9999;
+       }
+
+       .record div {
+           padding-left: 20px;
+       }
+
+       .record p {
+           clear: both;
+       }
+
+       .record span {
+           display: block;
+           float: left;
+       }
+
+       .record a {
+           word-break: keep-all;
+           /* 不换行 */
+           white-space: nowrap;
+           /* 不换行 */
+           overflow: hidden;
+           /* 内容超出宽度时隐藏超出部分的内容 */
+           text-overflow: ellipsis;
+           /* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+       }
+
+       .more {
+           display: block;
+           float: right;
+           width: 160px;
+       }
+
+       .record li {
+           list-style-type: none;
+       }
+
+       .record img {
+           position: absolute;
+           left: 0;
+           top: 0;
+           cursor: pointer;
+       }
+   </style>
+   <script type="text/javascript" src="/ppm/static/pdoc/timeAxisPkg/js/jquery-1.9.1.min.js"></script>
+   <script type="text/javascript" src="/ppm/static/pdoc/timeAxisPkg/js/jquery.easyui.min.js"></script>
+   <script type="text/javascript" src="/ppm/static/pdoc/timeAxisPkg/js/knockout-3.4.0.js"></script>
+   <script type="text/javascript" src="/ppm/static/pdoc/timeAxisPkg/js/moment.min.js"></script>
+   <script type="text/javascript" src="/ppm/static/pdoc/timeAxisPkg/js/underscore.js"></script>
+   <script type="text/javascript" src="/ppm/static/pdoc/timeAxisPkg/js/main.js"></script>
+</head>
+<body>
+   <div id="timeline">
+
+       <fieldset>
+           <div>
+               <label>时段：</label>
+               <span><input type="radio" name="timeStep" value="1M" data-bind="checked: timeStep,click: changeTimeStep"></input>1个月内</span>
+               <span><input type="radio" name="timeStep" value="3M" data-bind="checked: timeStep,click: changeTimeStep"></input>3个月内</span>
+               <span><input type="radio" name="timeStep" value="1Y" data-bind="checked: timeStep,click: changeTimeStep"></input>1年内</span>
+               <span><input type="radio" name="timeStep" value="DIY" data-bind="checked: timeStep,click: changeTimeStep"></input>自定义</span>
+               <span>从</span><input id="timeFrom" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser,disabled:true"></input>
+               <span>到</span><input id="timeTo" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser,disabled:true"></input>
+           </div>
+           <div>
+               <span>操作者：<input name="operator" type="text" data-bind="value: operator"></input></span>
+               <span>数据包名称：<input name="packageName" type="text" data-bind="value: packageName"></input></span>
+               <span>数据包编号：<input name="packageCode" type="text" data-bind="value: packageCode"></input></span>
+               <button name="search" data-bind="click: search">查询</button>
+           </div>
+       </fieldset>
+       <img style="position:absolute;left:10px;top:200px;" src="/ppm/static/pdoc/timeAxisPkg/img/arrow_yellow.png" data-bind="click:unhighlight" />
+       <!-- ko foreach: {data: myBigScales, as: 'scale'} -->
+       <span class="scale" data-bind="style:{'left': scale.value + 'px', 'top': '253px'}">
+           <span style="margin-left:-3px;vertical-align: top;"data-bind="text: scale.text">&nbsp;</span>
+       </span>
+       <!-- /ko -->
+       <!-- ko foreach: {data: myScales, as: 'scale'} -->
+       <span class="scale" data-bind="style:{'left': scale.value + 'px', 'top': '264px'}">
+           <img style="margin-left:-8px;margin-top:-2px" src="/ppm/static/pdoc/timeAxisPkg/img/scale.png"/><span style="margin-left:2px;vertical-align: top;"data-bind="text: scale.text">&nbsp;</span>
+       </span>
+       <!-- /ko -->
+       <!-- ko foreach: {data: myMilestones, as: 'milestone'} -->
+       <div class="milestone scale" data-bind="style:{'left': milestone.value + 'px', 'top': '220px'}">
+           <img src="/ppm/static/pdoc/timeAxisPkg/img/milestone.png"/>
+           <div style="margin-left:-46px" data-bind="text: milestone.text">&nbsp;</div>
+       </div>
+       <!-- /ko -->
+       <!-- ko foreach: {data: myItems, as: 'item'} -->
+       <div class="record" data-bind="style:{'left': item.x + 'px' , 'top': item.y + 'px', 'height': $root.itemHeight + 'px'}">
+           <!-- ko if: item.type=='in' -->
+           <div data-bind="style:{'height':($root.itemHeight - (item.data.length + 2) * $root.rowHeight)+'px'}"></div>
+           <div>
+               <p><span data-bind="text: item.name">&nbsp;</span><a style='float:right;' data-bind="attr: {'href': item.id}">更多信息</a></p>
+               <p data-bind="text: item.desc"></p>
+               <ul data-bind="foreach: { data: item.data, as: 'doc'}">
+                   <li>
+                       <a data-bind="attr: {'href': doc.url}, text: doc.name"></a>
+                   </li>
+               </ul>
+           </div>
+           <img data-bind="attr:{'src':'/ppm/static/pdoc/timeAxisPkg/img/arrow_green.png'},event:{click:function(data, event) {$root.highlight(event)}}" />
+           <!-- /ko -->
+           <!-- ko if: item.type=='out' -->
+           <div>
+               <p><span data-bind="text: item.name">&nbsp;</span><a style='float:right;' data-bind="attr: {'href': item.id}">更多信息</a></p>
+               <p data-bind="text: item.desc"></p>
+               <ul data-bind="foreach: { data: item.data, as: 'doc'}">
+                   <li>
+                       <a data-bind="attr: {'href': doc.url}, text: doc.name"></a>
+                   </li>
+               </ul>
+           </div>
+           <img data-bind="attr:{'src':'/ppm/static/pdoc/timeAxisPkg/img/arrow_red.png'},event:{click:function(data, event) {$root.highlight(event)}}" />
+           <!-- /ko -->
+       </div>
+       <!-- /ko -->
+   </div>
+</body>
+
+</html>

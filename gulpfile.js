@@ -8,12 +8,11 @@ const babel = require('gulp-babel');
 
 gulp.task('babel', () => {
     gulp.src(['src/**/*.js'])
-        /*.pipe(babel({
-            presets: ['es2015']
-        }))*/
-        .pipe(gulp.dest('dist'));
-
-    gulp.src(['src/**/*.ejs'])
+        .pipe(sourcemaps.init())
+        .pipe(babel({
+            presets: ['es2016', 'es2017', 'stage-0']
+        }))
+        .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('dist'));
 });
 
@@ -23,17 +22,19 @@ gulp.task('ejs', () => {
 });
 
 gulp.task('react', () => {
-    gulp.src('public/reactjsx/*.jsx')
+    gulp.src('src/**/*.jsx')
+        .pipe(sourcemaps.init())
         .pipe(react())
-        /*.pipe(babel({
-            presets: ['es2015']
-        }))*/
-        .pipe(gulp.dest('public/reactjs/'));
+        .pipe(babel({
+            presets: ['es2016', 'es2017', 'stage-0']
+        }))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest('dist'));
 });
 
 gulp.watch(['src/**/*.js', 'src/**/*.ejs'], ['babel', 'ejs']);
 
-gulp.watch('public/reactjsx/*.jsx', ['react']);
+gulp.watch('src/**/*.jsx', ['react']);
 
 /*gulp.task('serve', (done) => {
     runSequence('default', done);

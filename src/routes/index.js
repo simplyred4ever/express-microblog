@@ -7,7 +7,7 @@ const {
 } = require('markdown');
 const moment = require("moment");
 const React = require('react');
-const PostList = require('../../public/reactjs/post.js');
+const PostList = require('../views/post.js');
 
 module.exports = function(app) {
     const routes = ['./reg', './login', './logout', './post', './user', './file'];
@@ -24,6 +24,9 @@ module.exports = function(app) {
             for (let post of posts) {
                 post.time = moment(post.time).format("YYYY-MM-DD HH:mm:ss");
             }
+
+            console.log('2 ** 0.5 = ' + 2 ** 0.5);// test es2016
+
             res.render('index', {
                 title: '首页',
                 csrfToken: req.csrfToken(),
